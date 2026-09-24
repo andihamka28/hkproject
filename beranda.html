@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beranda - HKPROJECT</title>
+<style>
+  * { box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
+  body {
+    background: #f0f2f5;
+    margin: 0;
+    min-height: 100vh;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  .container { width: 100%; max-width: 1100px; }
+
+  /* ===== HEADER ===== */
+  .header {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: #fff;
+    padding: 20px 25px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0,123,255,0.3);
+  }
+  .header h1 { margin: 0; letter-spacing: 3px; font-size: 26px; }
+  .header .info { font-size: 14px; opacity: 0.95; margin-top: 4px; }
+  .header .info b { text-transform: uppercase; }
+
+  button {
+    padding: 10px 15px;
+    margin: 0;
+    background: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: inherit;
+    transition: 0.2s;
+  }
+  button:hover { background: #0056b3; }
+  button:disabled { background: #ccc; cursor: not-allowed; }
+  .btn-small { padding: 6px 12px; font-size: 13px; }
+  .btn-danger { background: #dc3545; }
+  .btn-danger:hover { background: #a71d2a; }
+  .btn-success { background: #28a745; }
+  .btn-success:hover { background: #1e7e34; }
+  .btn-warning { background: #ffc107; color: #333; }
+  .btn-warning:hover { background: #d39e00; }
+
+  /* ===== TOOLBAR ===== */
+  .toolbar {
+    background: #fff;
+    padding: 15px 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .toolbar h2 { margin: 0; color: #333; font-size: 18px; }
+
+  /* ===== GRID PRODUK ===== */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 18px;
+  }
+  .card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    padding: 20px;
+    border-left: 5px solid #007bff;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,0.12); }
+  .card.promo { border-left-color: #28a745; }
+
+  .card h3 {
+    margin: 0 0 12px 0;
+    color: #007bff;
+    font-size: 18px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+  .card.promo h3 { color: #28a745; }
+
+  .card .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    font-size: 14px;
+    border-bottom: 1px dashed #f0f0f0;
+    gap: 10px;
+  }
+  .card .row:last-of-type { border-bottom: none; }
+  .card .row.highlight {
+    background: #e8f5e9;
+    margin: 6px -8px;
+    padding: 8px;
+    border-radius: 6px;
+    border-bottom: none;
+  }
+  .card .label { color: #666; }
+  .card .value { color: #333; font-weight: 600; white-space: nowrap; }
+  .card .value.diskon { color: #dc3545; }
+  .card .value.total { color: #28a745; font-size: 16px; }
+
+  .card .admin-actions {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid #eee;
+    display: flex;
+    gap: 6px;
+    justify-content: flex-end;
+  }
+
+  .badge {
+    display: inline-block;
+    background: #ffc107;
+    color: #333;
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 10px;
+    font-weight: bold;
+    margin-left: 4px;
+    vertical-align: middle;
+  }
+  .badge-green { background: #28a745; color: #fff; }
+
+  /* ===== MODAL ===== */
+  .modal {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    padding: 20px;
+  }
+  .modal-content {
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 460px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  .modal-content h3 { margin-top: 0; color: #007bff; }
+  .modal-content label { display: block; margin: 10px 0 4px; font-size: 13px; color: #555; font-weight: 600; }
+  .modal-content small { color: #888; font-weight: normal; }
+  .modal-content input {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: inherit;
+  }
+  .modal-actions { display: flex; gap: 8px; margin-top: 20px; }
+  .modal-actions button { width: 100%; }
+
+  .checkbox-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 12px 0 4px;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .checkbox-wrap input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+    cursor: pointer;
+    transform: scale(1.2);
+  }
+  .checkbox-wrap label {
+    margin: 0;
+    cursor: pointer;
+    font-weight: 600;
+    color: #333;
+  }
+
+  .hidden { display: none !important; }
+
+  .empty, .loading-box {
+    text-align: center;
+    color: #999;
+    padding: 40px;
+    background: #fff;
+    border-radius: 12px;
+    grid-column: 1 / -1;
+  }
+  .loading-box { font-style: normal; }
+  .loading-box .spinner {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border: 3px solid #007bff;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-bottom: 10px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  @media (max-width: 500px) {
+    .header h1 { font-size: 20px; letter-spacing: 2px; }
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <div>
+      <h1>HKPROJECT</h1>
+      <div class="info">Login sebagai: <b id="userName"></b> (<span id="userRole"></span>)</div>
+    </div>
+    <button class="btn-small btn-danger" onclick="logout()">Logout</button>
+  </div>
+
+  <div class="toolbar">
+    <h2>📦 Daftar Produk</h2>
+    <button id="btnTambah" class="btn-small btn-success hidden" onclick="openTambahModal()">
+      ➕ Tambah Menu
+    </button>
+  </div>
+
+  <div id="productGrid" class="grid">
+    <div class="loading-box">
+      <div class="spinner"></div>
+      <div>Memuat produk...</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- MODAL FORM -->
+<div id="modalForm" class="modal hidden">
+  <div class="modal-content">
+    <h3 id="modalTitle">➕ Tambah Menu Baru</h3>
+
+    <label>Nama Produk</label>
+    <input type="text" id="inNama" placeholder="Contoh: Jersey Printing">
+
+    <label>Harga Normal (Rp)</label>
+    <input type="number" id="inHarga" placeholder="Contoh: 150000" min="0">
+
+    <label class="checkbox-wrap">
+      <input type="checkbox" id="inPromo">
+      <span>Aktifkan <b>Diskon 15%</b> & <b>Harga Beli 3</b></span>
+    </label>
+    <small style="color:#888;">Centang jika produk ini punya promo (seperti Jersey & Kemeja).</small>
+
+    <div id="promoFields" class="hidden">
+      <label>Harga Beli 3 (Rp) <small>— total untuk 3 pcs</small></label>
+      <input type="number" id="inHarga3" placeholder="Contoh: 400000" min="0">
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-danger" onclick="closeModal()">Batal</button>
+      <button class="btn-success" id="btnSimpan" onclick="simpanProduk()">Simpan</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== FIREBASE SDK ====== -->
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+
+<script>
+/* ============================================================
+   KONFIGURASI FIREBASE
+============================================================ */
+const firebaseConfig = {
+  apiKey: "AIzaSyDLITYbq1K9PyqCeQNbRgnBOWjrKxVvn_k",
+  authDomain: "hkproject-90d37.firebaseapp.com",
+  projectId: "hkproject-90d37",
+  storageBucket: "hkproject-90d37.firebasestorage.app",
+  messagingSenderId: "94510700157",
+  appId: "1:94510700157:web:d06cbc47c5796e6df38314"
+};
+
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+const auth = firebase.auth();
+const db   = firebase.firestore();
+
+/* ============================================================
+   GUARD — wajib login
+============================================================ */
+const currentUser = JSON.parse(sessionStorage.getItem('user') || 'null');
+if (!currentUser) {
+  alert('Silakan login dulu!');
+  window.location.href = 'index.html';
+}
+
+function isAdmin() {
+  return currentUser && currentUser.role === 'admin';
+}
+
+/* ============================================================
+   INIT TAMPILAN
+============================================================ */
+document.getElementById('userName').textContent = currentUser.username;
+document.getElementById('userRole').textContent = currentUser.role.toUpperCase();
+
+if (isAdmin()) {
+  document.getElementById('btnTambah').classList.remove('hidden');
+}
+
+/* ============================================================
+   HELPERS
+============================================================ */
+function rupiah(n) {
+  return 'Rp ' + Number(n || 0).toLocaleString('id-ID');
+}
+
+/* ============================================================
+   SEED DATA (HANYA JIKA FIRESTORE KOSONG)
+============================================================ */
+const DEFAULT_PRODUCTS = [
+  { id: 1, nama: 'Jersey Printing',      harga: 150000, promo: true,  harga3: 400000 },
+  { id: 2, nama: 'Kemeja Custom',        harga: 180000, promo: true,  harga3: 480000 },
+  { id: 3, nama: 'Cetak Foto',           harga: 25000,  promo: false, harga3: 0 },
+  { id: 4, nama: 'Gantungan Kunci',      harga: 15000,  promo: false, harga3: 0 },
+  { id: 5, nama: 'ID Card Lanyard',      harga: 35000,  promo: false, harga3: 0 },
+  { id: 6, nama: 'Papan Nama / Nametag', harga: 45000,  promo: false, harga3: 0 }
+];
+
+async function seedIfEmpty() {
+  try {
+    const snap = await db.collection('products').limit(1).get();
+    if (snap.empty && isAdmin()) {
+      // Hanya admin yang boleh seed data awal
+      const batch = db.batch();
+      DEFAULT_PRODUCTS.forEach(p => {
+        const ref = db.collection('products').doc();
+        batch.set(ref, p);
+      });
+      await batch.commit();
+      console.log('Seed data berhasil ditambahkan.');
+    }
+  } catch (err) {
+    console.warn('Seed gagal:', err);
+  }
+}
+
+/* ============================================================
+   LISTEN PRODUK (REAL-TIME)
+============================================================ */
+let unsubscribeProducts = null;
+
+function listenProducts() {
+  if (unsubscribeProducts) unsubscribeProducts();
+
+  unsubscribeProducts = db.collection('products')
+    .orderBy('id')
+    .onSnapshot(
+      (snapshot) => {
+        const products = [];
+        snapshot.forEach((doc) => {
+          products.push({ docId: doc.id, ...doc.data() });
+        });
+        renderProducts(products);
+      },
+      (error) => {
+        console.error('Firestore error:', error);
+        document.getElementById('productGrid').innerHTML = `
+          <div class="empty">
+            ⚠️ Gagal memuat data.<br>
+            <small>${error.message}</small>
+          </div>`;
+      }
+    );
+}
+
+/* ============================================================
+   RENDER PRODUK
+============================================================ */
+function renderProducts(products) {
+  const admin = isAdmin();
+  const grid = document.getElementById('productGrid');
+  grid.innerHTML = '';
+
+  if (!products || products.length === 0) {
+    grid.innerHTML = '<div class="empty">Belum ada produk. Klik "➕ Tambah Menu" untuk menambahkan.</div>';
+    return;
+  }
+
+  products.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'card' + (p.promo ? ' promo' : '');
+
+    let hargaHTML = `
+      <div class="row">
+        <span class="label">Harga Normal</span>
+        <span class="value">${rupiah(p.harga)}</span>
+      </div>
+    `;
+
+    if (p.promo && p.harga3 > 0) {
+      const diskon15 = Math.round(p.harga * 0.85);
+      const hemat    = p.harga - diskon15;
+      const perPcs   = Math.round(p.harga3 / 3);
+
+      hargaHTML += `
+        <div class="row">
+          <span class="label">Diskon 15% <span class="badge">HEMAT ${rupiah(hemat)}</span></span>
+          <span class="value diskon">${rupiah(diskon15)}</span>
+        </div>
+        <div class="row">
+          <span class="label">Harga Beli 3 <small>(/pcs)</small></span>
+          <span class="value">${rupiah(perPcs)}</span>
+        </div>
+        <div class="row highlight">
+          <span class="label"><b>Total Beli 3</b></span>
+          <span class="value total">${rupiah(p.harga3)}</span>
+        </div>
+      `;
+    }
+
+    const adminHTML = admin ? `
+      <div class="admin-actions">
+        <button class="btn-small btn-warning"
+          onclick="openEditModal('${p.docId}')">✏️ Edit</button>
+        <button class="btn-small btn-danger"
+          onclick="hapusProduk('${p.docId}', '${p.nama.replace(/'/g, "\\'")}')">🗑️ Hapus</button>
+      </div>
+    ` : '';
+
+    card.innerHTML = `
+      <h3>
+        <span>${p.nama}</span>
+        ${p.promo ? '<span class="badge badge-green">PROMO</span>' : ''}
+      </h3>
+      ${hargaHTML}
+      ${adminHTML}
+    `;
+    grid.appendChild(card);
+  });
+}
+
+/* ============================================================
+   MODAL: TAMBAH
+============================================================ */
+function openTambahModal() {
+  if (!isAdmin()) { alert('Hanya admin yang bisa menambah produk!'); return; }
+  document.getElementById('modalTitle').textContent = '➕ Tambah Menu Baru';
+  document.getElementById('inNama').value = '';
+  document.getElementById('inHarga').value = '';
+  document.getElementById('inHarga3').value = '';
+  document.getElementById('inPromo').checked = false;
+  document.getElementById('promoFields').classList.add('hidden');
+  document.getElementById('modalForm').dataset.mode = 'tambah';
+  document.getElementById('modalForm').dataset.editId = '';
+  document.getElementById('modalForm').classList.remove('hidden');
+}
+
+/* ============================================================
+   MODAL: EDIT — ambil data dari Firestore
+============================================================ */
+async function openEditModal(docId) {
+  if (!isAdmin()) { alert('Hanya admin yang bisa mengedit produk!'); return; }
+
+  try {
+    const doc = await db.collection('products').doc(docId).get();
+    if (!doc.exists) { alert('Produk tidak ditemukan!'); return; }
+    const p = doc.data();
+
+    document.getElementById('modalTitle').textContent = '✏️ Edit Produk';
+    document.getElementById('inNama').value = p.nama;
+    document.getElementById('inHarga').value = p.harga;
+    document.getElementById('inPromo').checked = !!p.promo;
+    document.getElementById('inHarga3').value = p.harga3 || '';
+    document.getElementById('promoFields').classList.toggle('hidden', !p.promo);
+    document.getElementById('modalForm').dataset.mode = 'edit';
+    document.getElementById('modalForm').dataset.editId = docId;
+    document.getElementById('modalForm').classList.remove('hidden');
+  } catch (err) {
+    alert('Gagal memuat produk: ' + err.message);
+  }
+}
+
+/* ============================================================
+   TOGGLE PROMO
+============================================================ */
+document.getElementById('inPromo').addEventListener('change', function () {
+  document.getElementById('promoFields').classList.toggle('hidden', !this.checked);
+});
+
+function closeModal() {
+  document.getElementById('modalForm').classList.add('hidden');
+}
+
+/* ============================================================
+   SIMPAN PRODUK (TAMBAH / EDIT) KE FIRESTORE
+============================================================ */
+async function simpanProduk() {
+  if (!isAdmin()) { alert('Hanya admin!'); return; }
+
+  const mode    = document.getElementById('modalForm').dataset.mode;
+  const editId  = document.getElementById('modalForm').dataset.editId;
+  const nama    = document.getElementById('inNama').value.trim();
+  const harga   = parseInt(document.getElementById('inHarga').value);
+  const promo   = document.getElementById('inPromo').checked;
+  const harga3  = promo ? parseInt(document.getElementById('inHarga3').value) : 0;
+
+  if (!nama || isNaN(harga) || harga <= 0) {
+    alert('Nama dan harga normal wajib diisi!');
+    return;
+  }
+  if (promo && (isNaN(harga3) || harga3 <= 0)) {
+    alert('Harga Beli 3 wajib diisi karena promo diaktifkan!');
+    return;
+  }
+
+  const btnSimpan = document.getElementById('btnSimpan');
+  btnSimpan.disabled = true;
+  btnSimpan.textContent = 'Menyimpan...';
+
+  try {
+    if (mode === 'edit') {
+      await db.collection('products').doc(editId).update({ nama, harga, promo, harga3 });
+    } else {
+      // Hitung id numerik baru
+      const snap = await db.collection('products').get();
+      const ids = snap.docs.map(d => d.data().id || 0);
+      const newId = ids.length ? Math.max(...ids) + 1 : 1;
+
+      await db.collection('products').add({ id: newId, nama, harga, promo, harga3 });
+    }
+    closeModal();
+  } catch (err) {
+    alert('Gagal menyimpan: ' + err.message);
+  } finally {
+    btnSimpan.disabled = false;
+    btnSimpan.textContent = 'Simpan';
+  }
+}
+
+/* ============================================================
+   HAPUS PRODUK
+============================================================ */
+async function hapusProduk(docId, nama) {
+  if (!isAdmin()) { alert('Hanya admin yang bisa menghapus!'); return; }
+  if (!confirm(`Yakin ingin menghapus "${nama}"?`)) return;
+
+  try {
+    await db.collection('products').doc(docId).delete();
+  } catch (err) {
+    alert('Gagal menghapus: ' + err.message);
+  }
+}
+
+/* ============================================================
+   LOGOUT
+============================================================ */
+function logout() {
+  sessionStorage.removeItem('user');
+  if (auth.currentUser) {
+    auth.signOut().then(() => {
+      window.location.href = 'index.html';
+    });
+  } else {
+    window.location.href = 'index.html';
+  }
+}
+
+/* ============================================================
+   MULAI
+============================================================ */
+(async function start() {
+  // Kalau admin & database kosong, isi data default
+  if (isAdmin()) {
+    await seedIfEmpty();
+  }
+  // Mulai dengarkan data real-time
+  listenProducts();
+})();
+</script>
+</body>
+</html>
