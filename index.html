@@ -51,7 +51,6 @@
     transition: 0.2s;
   }
   button:hover { background: #0056b3; }
-  button:disabled { background: #ccc; cursor: not-allowed; }
   .btn-guest { background: #28a745; }
   .btn-guest:hover { background: #1e7e34; }
 
@@ -76,19 +75,6 @@
     background: #ddd;
   }
   .divider span { padding: 0 10px; }
-
-  .loading {
-    display: inline-block;
-    width: 14px;
-    height: 14px;
-    border: 2px solid #fff;
-    border-top-color: transparent;
-    border-radius: 50%;
-    animation: spin 0.6s linear infinite;
-    margin-right: 6px;
-    vertical-align: middle;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
 </style>
 </head>
 <body>
@@ -99,38 +85,23 @@
   <p id="error" class="error"></p>
 
   <form id="adminForm">
-    <input type="email" id="email" placeholder="Username" required autocomplete="username">
-    <input type="password" id="password" placeholder="Password" required autocomplete="current-password">
-    <button type="submit" id="btnLogin">Login sebagai Admin</button>
+    <input type="text" id="username" placeholder="Username Admin" required autocomplete="username">
+    <input type="password" id="password" placeholder="Password Admin" required autocomplete="current-password">
+    <button type="submit">Login sebagai Admin</button>
   </form>
 
   <div class="divider"><span>atau</span></div>
   <button id="guestBtn" class="btn-guest">👤 Masuk sebagai Tamu</button>
 </div>
 
-<!-- ====== FIREBASE SDK ====== -->
-<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
-
 <script>
 /* ============================================================
-   KONFIGURASI FIREBASE
+   KONFIGURASI ADMIN (HARDCODED)
 ============================================================ */
-const firebaseConfig = {
-  apiKey: "AIzaSyDLITYbq1K9PyqCeQNbRgnBOWjrKxVvn_k",
-  authDomain: "hkproject-90d37.firebaseapp.com",
-  projectId: "hkproject-90d37",
-  storageBucket: "hkproject-90d37.firebasestorage.app",
-  messagingSenderId: "94510700157",
-  appId: "1:94510700157:web:d06cbc47c5796e6df38314"
+const ADMIN = {
+  username: 'admin',
+  password: 'admin123'
 };
-
-// Inisialisasi Firebase
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-}
-const auth = firebase.auth();
 
 /* ============================================================
    CEK SESI — kalau sudah login, langsung ke beranda
@@ -145,46 +116,28 @@ const auth = firebase.auth();
 /* ============================================================
    ELEMEN
 ============================================================ */
-const errorEl  = document.getElementById('error');
-const btnLogin = document.getElementById('btnLogin');
+const errorEl = document.getElementById('error');
 
 /* ============================================================
-   LOGIN ADMIN (FIREBASE AUTH)
+   LOGIN ADMIN
 ============================================================ */
 document.getElementById('adminForm').addEventListener('submit', function (e) {
   e.preventDefault();
 
-  const email    = document.getElementById('email').value.trim();
-  const password = document.getElementById('password').value;
+  const u = document.getElementById('username').value.trim();
+  const p = document.getElementById('password').value;
+
+  if (u !== ADMIN.username || p !== ADMIN.password) {
+    errorEl.textContent = 'Username atau password admin salah!';
+    return;
+  }
 
   errorEl.textContent = '';
-  btnLogin.disabled = true;
-  btnLogin.innerHTML = '<span class="loading"></span>Memproses...';
-
-  auth.signInWithEmailAndPassword(email, password)
-    .then((userCredential) => {
-      // Login berhasil
-      sessionStorage.setItem('user', JSON.stringify({
-        uid: userCredential.user.uid,
-        email: userCredential.user.email,
-        username: userCredential.user.email,
-        role: 'admin'
-      }));
-      window.location.href = 'beranda.html';
-    })
-    .catch((error) => {
-      console.error('Login error:', error.code, error.message);
-      let msg = 'Email atau password salah!';
-      if (error.code === 'auth/invalid-email') msg = 'Format email tidak valid!';
-      else if (error.code === 'auth/user-not-found') msg = 'Akun tidak ditemukan!';
-      else if (error.code === 'auth/wrong-password') msg = 'Password salah!';
-      else if (error.code === 'auth/invalid-credential') msg = 'Email atau password salah!';
-      else if (error.code === 'auth/too-many-requests') msg = 'Terlalu banyak percobaan. Coba lagi nanti.';
-
-      errorEl.textContent = msg;
-      btnLogin.disabled = false;
-      btnLogin.textContent = 'Login sebagai Admin';
-    });
+  sessionStorage.setItem('user', JSON.stringify({
+    username: u,
+    role: 'admin'
+  }));
+  window.location.href = 'beranda.html';
 });
 
 /* ============================================================
@@ -192,7 +145,6 @@ document.getElementById('adminForm').addEventListener('submit', function (e) {
 ============================================================ */
 document.getElementById('guestBtn').addEventListener('click', function () {
   sessionStorage.setItem('user', JSON.stringify({
-    uid: 'guest',
     username: 'Tamu',
     role: 'tamu'
   }));
