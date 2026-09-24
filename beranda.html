@@ -551,47 +551,75 @@
     margin-top: 30px;
     background: #fff;
     border-radius: 12px;
-    padding: 22px 25px;
+    padding: 20px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     border-top: 4px solid #007bff;
   }
   .footer-title {
-    font-size: 16px;
+    font-size: 15px;
     color: #333;
-    margin: 0 0 14px 0;
+    margin: 0 0 4px 0;
     font-weight: 700;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
   }
   .footer-sub {
     font-size: 12px;
     color: #888;
-    font-weight: normal;
-    margin-left: 4px;
+    margin: 0 0 16px 0;
+    line-height: 1.4;
   }
   .footer-contacts {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  @media (max-width: 500px) {
+    .footer-contacts { grid-template-columns: 1fr; }
   }
   .contact-btn {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 12px 18px;
+    padding: 14px 16px;
     border-radius: 10px;
     text-decoration: none;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     color: #fff;
     transition: 0.2s;
-    flex: 1;
-    min-width: 200px;
-    justify-content: center;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
   }
   .contact-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
-  .contact-btn .ic { font-size: 20px; }
+  .contact-btn .ic {
+    font-size: 22px;
+    flex-shrink: 0;
+    width: 26px;
+    text-align: center;
+  }
+  .contact-btn .txt {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    flex: 1;
+  }
+  .contact-btn .txt .lbl {
+    font-size: 10px;
+    opacity: 0.85;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+  }
+  .contact-btn .txt .val {
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   .contact-wa { background: #25d366; }
   .contact-wa:hover { background: #128c7e; }
   .contact-ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
@@ -601,8 +629,9 @@
     padding-top: 14px;
     border-top: 1px solid #f0f0f0;
     text-align: center;
-    font-size: 12px;
+    font-size: 11px;
     color: #999;
+    line-height: 1.5;
   }
 
   /* Toast */
@@ -613,7 +642,6 @@
     .menu-grid { grid-template-columns: repeat(2, 1fr); }
     .item-grid { grid-template-columns: 1fr; }
     .nav-tab { padding: 8px 12px; font-size: 13px; }
-    .contact-btn { min-width: 100%; }
   }
 </style>
 </head>
@@ -792,24 +820,28 @@
 
   <!-- ================= FOOTER HUBUNGI KAMI ================= -->
   <div class="footer">
-    <h3 class="footer-title">
-      📞 Hubungi Kami
-      <span class="footer-sub">— pesan, tanya, atau custom order langsung</span>
-    </h3>
+    <h3 class="footer-title">📞 Hubungi Kami</h3>
+    <p class="footer-sub">Pesan, tanya, atau custom order langsung</p>
 
     <div class="footer-contacts">
       <a class="contact-btn contact-wa"
          href="https://wa.me/6287811101710?text=Halo%20HKPROJECT!%20Saya%20ingin%20bertanya."
          target="_blank" rel="noopener">
         <span class="ic">💬</span>
-        <span>WhatsApp — 0878-1110-1710</span>
+        <span class="txt">
+          <span class="lbl">WhatsApp</span>
+          <span class="val">0878-1110-1710</span>
+        </span>
       </a>
 
       <a class="contact-btn contact-ig"
          href="https://instagram.com/hkproject28"
          target="_blank" rel="noopener">
         <span class="ic">📷</span>
-        <span>Instagram — @hkproject28</span>
+        <span class="txt">
+          <span class="lbl">Instagram</span>
+          <span class="val">@hkproject28</span>
+        </span>
       </a>
     </div>
 
@@ -1190,16 +1222,29 @@ function listenItems(menuDocId) {
 }
 
 /* ============================================================
-   HITUNG HARGA SATUAN (QTY & PROMO)
+   HITUNG SUBTOTAL DENGAN DISKON BERTINGKAT
+   - Setiap kelipatan 3 → pakai harga3 (grosir)
+   - Sisa 1 atau 2 → pakai diskon 15%
+   - Non-promo → harga normal × qty
 ============================================================ */
-function hitungHargaSatuan(item, qty) {
-  if (item.promo && item.harga3 > 0 && qty >= 3) {
-    return Math.round(item.harga3 / 3);
+function hitungSubtotal(item, qty) {
+  if (!item.promo || !item.harga3 || item.harga3 <= 0) {
+    return item.harga * qty;
   }
-  if (item.promo) {
-    return Math.round(item.harga * 0.85);
+
+  const hargaDiskon = Math.round(item.harga * 0.85);
+
+  if (qty < 3) {
+    return hargaDiskon * qty;
   }
-  return item.harga;
+
+  const setGrosir = Math.floor(qty / 3);
+  const sisa = qty % 3;
+
+  const totalGrosir = setGrosir * item.harga3;
+  const totalSisa = sisa * hargaDiskon;
+
+  return totalGrosir + totalSisa;
 }
 
 /* ============================================================
@@ -1269,7 +1314,7 @@ function renderItems(items) {
 
       <div class="qty-preview" id="preview_${p.docId}">
         <span class="lbl">Subtotal:</span>
-        <span class="val" id="preview_val_${p.docId}">${rupiah(hitungHargaSatuan(p, 1))}</span>
+        <span class="val" id="preview_val_${p.docId}">${rupiah(hitungSubtotal(p, 1))}</span>
       </div>
 
       <button class="btn-add-cart" onclick='tambahKeKeranjang(${JSON.stringify({
@@ -1315,11 +1360,21 @@ function updateQtyPreview(docId, harga, promo, harga3) {
   if (qty < 1) qty = 1;
 
   const item = { harga, promo, harga3 };
-  const satuan = hitungHargaSatuan(item, qty);
-  const total = satuan * qty;
+  const total = hitungSubtotal(item, qty);
+  const satuanRata = Math.round(total / qty);
 
-  let text = `${qty} × ${rupiah(satuan)}`;
-  if (promo && qty >= 3 && harga3 > 0) text += ` ✅ grosir`;
+  let text = `${qty} × ± ${rupiah(satuanRata)}`;
+  if (promo && harga3 > 0 && qty >= 3) {
+    const setGrosir = Math.floor(qty / 3);
+    const sisa = qty % 3;
+    if (sisa === 0) {
+      text += ` ✅ ${setGrosir}× grosir`;
+    } else {
+      text += ` ✅ ${setGrosir}× grosir + ${sisa}× diskon`;
+    }
+  } else if (promo) {
+    text += ` ✅ diskon 15%`;
+  }
 
   document.getElementById('preview_val_' + docId).textContent = rupiah(total);
   document.querySelector(`#preview_${docId} .lbl`).textContent = text;
@@ -1351,15 +1406,16 @@ function tambahKeKeranjang(item) {
   const qtyInput = document.getElementById('qty_' + item.docId);
   const qty = parseInt(qtyInput.value) || 1;
 
-  const satuan = hitungHargaSatuan(item, qty);
-  const subtotal = satuan * qty;
-
   const idx = cart.findIndex(c => c.docId === item.docId);
+
   if (idx !== -1) {
     cart[idx].qty += qty;
-    cart[idx].satuan = hitungHargaSatuan(item, cart[idx].qty);
-    cart[idx].subtotal = cart[idx].satuan * cart[idx].qty;
+    const newQty = cart[idx].qty;
+    const newSubtotal = hitungSubtotal(cart[idx], newQty);
+    cart[idx].subtotal = newSubtotal;
+    cart[idx].satuan = Math.round(newSubtotal / newQty);
   } else {
+    const subtotal = hitungSubtotal(item, qty);
     cart.push({
       docId: item.docId,
       nama: item.nama,
@@ -1368,7 +1424,7 @@ function tambahKeKeranjang(item) {
       promo: item.promo,
       harga3: item.harga3,
       qty: qty,
-      satuan: satuan,
+      satuan: Math.round(subtotal / qty),
       subtotal: subtotal
     });
   }
@@ -1449,9 +1505,10 @@ function ubahQtyCart(idx, delta) {
   cart[idx].qty += delta;
   if (cart[idx].qty < 1) cart[idx].qty = 1;
 
-  const satuan = hitungHargaSatuan(cart[idx], cart[idx].qty);
-  cart[idx].satuan = satuan;
-  cart[idx].subtotal = satuan * cart[idx].qty;
+  const qty = cart[idx].qty;
+  const subtotal = hitungSubtotal(cart[idx], qty);
+  cart[idx].subtotal = subtotal;
+  cart[idx].satuan = Math.round(subtotal / qty);
 
   saveCart();
   renderCart();
@@ -1482,7 +1539,7 @@ function checkoutWA() {
     pesan += `${i + 1}. 📦 *${c.nama}*\n`;
     pesan += `   Menu: ${c.menuNama}\n`;
     pesan += `   Jumlah: ${c.qty} pcs\n`;
-    pesan += `   Harga satuan: ${rupiah(c.satuan)}\n`;
+    pesan += `   Harga satuan: ± ${rupiah(c.satuan)}\n`;
     pesan += `   Subtotal: *${rupiah(c.subtotal)}*\n\n`;
   });
 
