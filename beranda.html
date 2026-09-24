@@ -214,7 +214,6 @@
     border-radius: 12px;
     grid-column: 1 / -1;
   }
-  .loading-box { font-style: normal; }
   .loading-box .spinner {
     display: inline-block;
     width: 30px;
@@ -290,9 +289,8 @@
   </div>
 </div>
 
-<!-- ====== FIREBASE SDK ====== -->
+<!-- ====== FIREBASE SDK (HANYA FIRESTORE) ====== -->
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
 
 <script>
@@ -311,11 +309,10 @@ const firebaseConfig = {
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
-const auth = firebase.auth();
-const db   = firebase.firestore();
+const db = firebase.firestore();
 
 /* ============================================================
-   GUARD — wajib login
+   GUARD — wajib login (dari sessionStorage, bukan Firebase Auth)
 ============================================================ */
 const currentUser = JSON.parse(sessionStorage.getItem('user') || 'null');
 if (!currentUser) {
@@ -345,7 +342,7 @@ function rupiah(n) {
 }
 
 /* ============================================================
-   SEED DATA (HANYA JIKA FIRESTORE KOSONG)
+   SEED DATA DEFAULT (HANYA JIKA FIRESTORE KOSONG)
 ============================================================ */
 const DEFAULT_PRODUCTS = [
   { id: 1, nama: 'Jersey Printing',      harga: 150000, promo: true,  harga3: 400000 },
@@ -360,14 +357,13 @@ async function seedIfEmpty() {
   try {
     const snap = await db.collection('products').limit(1).get();
     if (snap.empty && isAdmin()) {
-      // Hanya admin yang boleh seed data awal
       const batch = db.batch();
       DEFAULT_PRODUCTS.forEach(p => {
         const ref = db.collection('products').doc();
         batch.set(ref, p);
       });
       await batch.commit();
-      console.log('Seed data berhasil ditambahkan.');
+      console.log('✅ Seed data default berhasil ditambahkan.');
     }
   } catch (err) {
     console.warn('Seed gagal:', err);
@@ -450,10 +446,8 @@ function renderProducts(products) {
 
     const adminHTML = admin ? `
       <div class="admin-actions">
-        <button class="btn-small btn-warning"
-          onclick="openEditModal('${p.docId}')">✏️ Edit</button>
-        <button class="btn-small btn-danger"
-          onclick="hapusProduk('${p.docId}', '${p.nama.replace(/'/g, "\\'")}')">🗑️ Hapus</button>
+        <button class="btn-small btn-warning" onclick="openEditModal('${p.docId}')">✏️ Edit</button>
+        <button class="btn-small btn-danger" onclick="hapusProduk('${p.docId}', '${p.nama.replace(/'/g, "\\'")}')">🗑️ Hapus</button>
       </div>
     ` : '';
 
@@ -486,7 +480,7 @@ function openTambahModal() {
 }
 
 /* ============================================================
-   MODAL: EDIT — ambil data dari Firestore
+   MODAL: EDIT
 ============================================================ */
 async function openEditModal(docId) {
   if (!isAdmin()) { alert('Hanya admin yang bisa mengedit produk!'); return; }
@@ -551,11 +545,9 @@ async function simpanProduk() {
     if (mode === 'edit') {
       await db.collection('products').doc(editId).update({ nama, harga, promo, harga3 });
     } else {
-      // Hitung id numerik baru
       const snap = await db.collection('products').get();
       const ids = snap.docs.map(d => d.data().id || 0);
       const newId = ids.length ? Math.max(...ids) + 1 : 1;
-
       await db.collection('products').add({ id: newId, nama, harga, promo, harga3 });
     }
     closeModal();
@@ -586,24 +578,16 @@ async function hapusProduk(docId, nama) {
 ============================================================ */
 function logout() {
   sessionStorage.removeItem('user');
-  if (auth.currentUser) {
-    auth.signOut().then(() => {
-      window.location.href = 'index.html';
-    });
-  } else {
-    window.location.href = 'index.html';
-  }
+  window.location.href = 'index.html';
 }
 
 /* ============================================================
    MULAI
 ============================================================ */
 (async function start() {
-  // Kalau admin & database kosong, isi data default
   if (isAdmin()) {
     await seedIfEmpty();
   }
-  // Mulai dengarkan data real-time
   listenProducts();
 })();
 </script>
