@@ -34,7 +34,38 @@
   .header h1 { margin: 0; letter-spacing: 3px; font-size: 26px; }
   .header .info { font-size: 14px; opacity: 0.95; margin-top: 4px; }
   .header .info b { text-transform: uppercase; }
-  .header-right { display: flex; gap: 8px; flex-wrap: wrap; }
+  .header-right { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+  /* ===== TOMBOL KERANJANG DI HEADER ===== */
+  .btn-cart-header {
+    background: #fff;
+    color: #007bff;
+    border: 2px solid #fff;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    transition: 0.2s;
+    width: auto;
+    margin: 0;
+  }
+  .btn-cart-header:hover { background: #f0f2f5; color: #0056b3; }
+  .btn-cart-header .cart-badge {
+    background: #dc3545;
+    color: #fff;
+    border-radius: 10px;
+    padding: 1px 7px;
+    font-size: 11px;
+    font-weight: bold;
+    min-width: 20px;
+    text-align: center;
+  }
+  .btn-cart-header .cart-badge.hidden { display: none; }
 
   /* ===== NAV TABS ===== */
   .nav-tabs {
@@ -206,14 +237,6 @@
     justify-content: flex-end;
     flex-wrap: wrap;
   }
-  .item-card .guest-actions {
-    margin-top: 14px;
-    padding-top: 12px;
-    border-top: 1px solid #eee;
-    display: flex;
-    gap: 8px;
-  }
-  .item-card .guest-actions button { flex: 1; }
 
   .badge {
     display: inline-block;
@@ -228,93 +251,160 @@
   }
   .badge-green { background: #28a745; color: #fff; }
 
+  /* ===== QTY BOX (TAMU) ===== */
+  .qty-box {
+    margin-top: 14px;
+    padding: 12px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    border: 1px solid #e0e0e0;
+  }
+  .qty-box .qty-label { font-size: 13px; color: #555; font-weight: 600; }
+  .qty-control { display: flex; align-items: center; gap: 6px; }
+  .qty-control button {
+    width: 34px; height: 34px; border-radius: 50%; padding: 0;
+    font-size: 18px; font-weight: bold;
+    background: #007bff; color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0;
+  }
+  .qty-control button:hover { background: #0056b3; }
+  .qty-control input {
+    width: 55px; text-align: center; padding: 8px 4px;
+    border: 1.5px solid #ccc; border-radius: 8px;
+    font-size: 15px; font-weight: bold; font-family: inherit;
+    background: #fff;
+  }
+  .qty-preview {
+    margin-top: 10px; padding: 10px 12px;
+    background: #e8f5e9; border-radius: 8px;
+    border: 1px solid #a5d6a7;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 13px; gap: 8px;
+  }
+  .qty-preview .lbl { color: #555; }
+  .qty-preview .val { color: #28a745; font-weight: bold; font-size: 15px; white-space: nowrap; }
+
+  .btn-add-cart {
+    width: 100%; margin-top: 10px; padding: 12px;
+    font-size: 14px; font-weight: 700;
+    background: linear-gradient(135deg, #28a745, #1e7e34);
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(40,167,69,0.25);
+  }
+  .btn-add-cart:hover { background: linear-gradient(135deg, #1e7e34, #155724); }
+
+  /* ===== MODAL KERANJANG ===== */
+  .cart-list {
+    max-height: 380px; overflow-y: auto; margin: 15px 0;
+    border: 1px solid #eee; border-radius: 10px;
+  }
+  .cart-row {
+    padding: 14px 16px;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .cart-row:last-child { border-bottom: none; }
+  .cart-row .cart-info { flex: 1; min-width: 0; }
+  .cart-row .cart-nama { font-weight: bold; color: #333; margin-bottom: 4px; font-size: 14px; word-break: break-word; }
+  .cart-row .cart-detail { color: #888; font-size: 12px; }
+  .cart-row .cart-subtotal { color: #28a745; font-weight: 700; white-space: nowrap; font-size: 14px; text-align: right; }
+  .cart-row .cart-qty-mini {
+    display: flex; align-items: center; gap: 4px;
+    background: #f0f2f5; border-radius: 20px; padding: 3px;
+  }
+  .cart-row .cart-qty-mini button {
+    width: 26px; height: 26px; border-radius: 50%;
+    padding: 0; font-size: 14px; font-weight: bold;
+    background: #fff; color: #007bff; margin: 0;
+    border: 1px solid #ddd;
+  }
+  .cart-row .cart-qty-mini button:hover { background: #007bff; color: #fff; }
+  .cart-row .cart-qty-mini span {
+    min-width: 26px; text-align: center;
+    font-weight: bold; font-size: 13px; color: #333;
+  }
+  .cart-row .cart-hapus {
+    width: 30px; height: 30px; border-radius: 50%;
+    padding: 0; font-size: 16px;
+    background: #ffe5e5; color: #dc3545;
+    border: 1px solid #f5c2c2; margin: 0;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .cart-row .cart-hapus:hover { background: #dc3545; color: #fff; }
+
+  .cart-total-box {
+    padding: 16px;
+    background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+    border-radius: 10px; margin-bottom: 12px;
+    border: 2px solid #28a745;
+  }
+  .cart-total-box .ct-label {
+    font-size: 12px; color: #1e7e34; text-transform: uppercase;
+    letter-spacing: 1px; font-weight: 700; margin-bottom: 4px;
+  }
+  .cart-total-box .ct-value { font-size: 26px; font-weight: 800; color: #28a745; }
+
+  .cart-empty { text-align: center; padding: 40px 20px; color: #999; }
+  .cart-empty .icon-big { font-size: 56px; margin-bottom: 10px; opacity: 0.4; }
+
   /* ===== KALKULATOR ===== */
   .kalkulator-wrap {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 18px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 18px;
   }
   @media (max-width: 800px) {
     .kalkulator-wrap { grid-template-columns: 1fr; }
   }
-
   .kalkulator-panel {
-    background: #fff;
-    border-radius: 14px;
-    padding: 24px;
+    background: #fff; border-radius: 14px; padding: 24px;
     box-shadow: 0 2px 15px rgba(0,0,0,0.08);
   }
   .kalkulator-panel h3 {
-    margin: 0 0 18px 0;
-    padding-bottom: 12px;
+    margin: 0 0 18px 0; padding-bottom: 12px;
     border-bottom: 2px solid #f0f2f5;
-    font-size: 16px;
-    color: #007bff;
+    font-size: 16px; color: #007bff;
   }
-
   .kalkulator-panel label {
-    display: block;
-    margin: 14px 0 6px;
-    font-size: 13px;
-    color: #555;
-    font-weight: 600;
+    display: block; margin: 14px 0 6px;
+    font-size: 13px; color: #555; font-weight: 600;
   }
   .kalkulator-panel input,
   .kalkulator-panel select {
-    width: 100%;
-    padding: 12px 14px;
-    border: 1.5px solid #e0e0e0;
-    border-radius: 8px;
-    font-size: 15px;
-    font-family: inherit;
+    width: 100%; padding: 12px 14px;
+    border: 1.5px solid #e0e0e0; border-radius: 8px;
+    font-size: 15px; font-family: inherit;
     transition: border-color 0.2s;
     background: #fafbfc;
   }
   .kalkulator-panel input:focus,
   .kalkulator-panel select:focus {
-    outline: none;
-    border-color: #007bff;
-    background: #fff;
+    outline: none; border-color: #007bff; background: #fff;
   }
   .kalkulator-panel input.uang {
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
+    font-size: 16px; font-weight: 600; letter-spacing: 0.5px;
   }
-
   .quick-nominal {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 8px;
+    display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px;
   }
   .quick-nominal button {
-    flex: 1;
-    min-width: 70px;
-    padding: 8px 10px;
-    background: #e7f1ff;
-    color: #007bff;
-    border: 1px solid #b8daff;
-    border-radius: 6px;
-    font-size: 12px;
-    font-weight: 600;
-    margin: 0;
-    cursor: pointer;
-    transition: 0.15s;
+    flex: 1; min-width: 70px; padding: 8px 10px;
+    background: #e7f1ff; color: #007bff;
+    border: 1px solid #b8daff; border-radius: 6px;
+    font-size: 12px; font-weight: 600; margin: 0;
+    cursor: pointer; transition: 0.15s;
   }
-  .quick-nominal button:hover {
-    background: #007bff;
-    color: #fff;
-  }
+  .quick-nominal button:hover { background: #007bff; color: #fff; }
 
   .btn-catat {
-    width: 100%;
-    padding: 14px;
-    font-size: 15px;
-    font-weight: 700;
+    width: 100%; padding: 14px;
+    font-size: 15px; font-weight: 700;
     background: linear-gradient(135deg, #28a745, #1e7e34);
-    border-radius: 10px;
-    margin-top: 20px;
+    border-radius: 10px; margin-top: 20px;
     letter-spacing: 0.5px;
     box-shadow: 0 4px 12px rgba(40,167,69,0.3);
   }
@@ -322,15 +412,11 @@
 
   .hasil-panel {
     background: linear-gradient(135deg, #f8f9fa, #eef1f5);
-    display: flex;
-    flex-direction: column;
+    display: flex; flex-direction: column;
   }
   .hasil-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 14px 0;
-    font-size: 14px;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 0; font-size: 14px;
     border-bottom: 1px dashed #d0d5dd;
   }
   .hasil-row:last-of-type { border-bottom: none; }
@@ -338,40 +424,24 @@
   .hasil-row .value { color: #333; font-weight: 700; font-size: 15px; }
 
   .hasil-row.total {
-    background: #fff;
-    margin: 8px -12px;
-    padding: 14px 12px;
-    border-radius: 8px;
-    border: 2px solid #007bff;
+    background: #fff; margin: 8px -12px; padding: 14px 12px;
+    border-radius: 8px; border: 2px solid #007bff;
     border-bottom: 2px solid #007bff;
   }
   .hasil-row.total .value {
-    color: #007bff;
-    font-size: 20px;
-    font-weight: 800;
+    color: #007bff; font-size: 20px; font-weight: 800;
   }
-
   .kembalian-big {
-    margin-top: auto;
-    padding: 20px;
-    border-radius: 12px;
-    text-align: center;
-    background: #fff;
-    border: 2px dashed #ccc;
-    margin-top: 20px;
+    padding: 20px; border-radius: 12px;
+    text-align: center; background: #fff;
+    border: 2px dashed #ccc; margin-top: 20px;
   }
   .kembalian-big .kembali-label {
-    font-size: 13px;
-    color: #666;
-    margin-bottom: 8px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 600;
+    font-size: 13px; color: #666; margin-bottom: 8px;
+    text-transform: uppercase; letter-spacing: 1px; font-weight: 600;
   }
   .kembalian-big .kembali-value {
-    font-size: 28px;
-    font-weight: 800;
-    color: #999;
+    font-size: 28px; font-weight: 800; color: #999;
   }
   .kembalian-big.ok {
     background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
@@ -379,7 +449,6 @@
   }
   .kembalian-big.ok .kembali-label { color: #1e7e34; }
   .kembalian-big.ok .kembali-value { color: #28a745; }
-
   .kembalian-big.kurang {
     background: linear-gradient(135deg, #ffebee, #ffcdd2);
     border: 2px solid #dc3545;
@@ -391,13 +460,10 @@
   .keuangan-summary {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 16px;
-    margin-bottom: 20px;
+    gap: 16px; margin-bottom: 20px;
   }
   .summary-card {
-    background: #fff;
-    border-radius: 12px;
-    padding: 20px;
+    background: #fff; border-radius: 12px; padding: 20px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.08);
     border-left: 5px solid #007bff;
   }
@@ -411,26 +477,18 @@
   .summary-card.saldo .value { color: #d39e00; }
 
   .keuangan-table {
-    background: #fff;
-    border-radius: 12px;
+    background: #fff; border-radius: 12px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.08);
     overflow: hidden;
   }
-  .keuangan-table table {
-    width: 100%;
-    border-collapse: collapse;
-  }
+  .keuangan-table table { width: 100%; border-collapse: collapse; }
   .keuangan-table th {
-    background: #f8f9fa;
-    padding: 12px;
-    text-align: left;
-    font-size: 13px;
-    color: #555;
+    background: #f8f9fa; padding: 12px;
+    text-align: left; font-size: 13px; color: #555;
     border-bottom: 2px solid #eee;
   }
   .keuangan-table td {
-    padding: 12px;
-    border-bottom: 1px solid #f0f0f0;
+    padding: 12px; border-bottom: 1px solid #f0f0f0;
     font-size: 14px;
   }
   .keuangan-table tr:last-child td { border-bottom: none; }
@@ -439,78 +497,123 @@
 
   /* ===== MODAL ===== */
   .modal {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
     background: rgba(0,0,0,0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 100;
-    padding: 20px;
+    display: flex; justify-content: center; align-items: center;
+    z-index: 100; padding: 20px;
   }
   .modal-content {
-    background: #fff;
-    padding: 25px;
-    border-radius: 12px;
-    width: 100%;
-    max-width: 460px;
-    max-height: 90vh;
-    overflow-y: auto;
+    background: #fff; padding: 25px; border-radius: 12px;
+    width: 100%; max-width: 460px;
+    max-height: 90vh; overflow-y: auto;
   }
   .modal-content h3 { margin-top: 0; color: #007bff; }
-  .modal-content label { display: block; margin: 10px 0 4px; font-size: 13px; color: #555; font-weight: 600; }
+  .modal-content label {
+    display: block; margin: 10px 0 4px;
+    font-size: 13px; color: #555; font-weight: 600;
+  }
   .modal-content small { color: #888; font-weight: normal; }
   .modal-content input, .modal-content select, .modal-content textarea {
-    width: 100%;
-    padding: 10px;
-    margin: 8px 0;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 14px;
-    font-family: inherit;
+    width: 100%; padding: 10px; margin: 8px 0;
+    border: 1px solid #ccc; border-radius: 6px;
+    font-size: 14px; font-family: inherit;
   }
   .modal-actions { display: flex; gap: 8px; margin-top: 20px; }
   .modal-actions button { width: 100%; }
 
   .checkbox-wrap {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin: 12px 0 4px;
-    padding: 10px;
-    background: #f8f9fa;
-    border-radius: 6px;
+    display: flex; align-items: center; gap: 8px;
+    margin: 12px 0 4px; padding: 10px;
+    background: #f8f9fa; border-radius: 6px;
     cursor: pointer;
   }
-  .checkbox-wrap input[type="checkbox"] { width: auto; margin: 0; cursor: pointer; transform: scale(1.2); }
+  .checkbox-wrap input[type="checkbox"] {
+    width: auto; margin: 0; cursor: pointer; transform: scale(1.2);
+  }
 
   .hidden { display: none !important; }
 
   .empty, .loading-box {
-    text-align: center;
-    color: #999;
-    padding: 40px;
-    background: #fff;
-    border-radius: 12px;
+    text-align: center; color: #999; padding: 40px;
+    background: #fff; border-radius: 12px;
     grid-column: 1 / -1;
   }
   .loading-box .spinner {
-    display: inline-block;
-    width: 30px;
-    height: 30px;
-    border: 3px solid #007bff;
-    border-top-color: transparent;
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
+    display: inline-block; width: 30px; height: 30px;
+    border: 3px solid #007bff; border-top-color: transparent;
+    border-radius: 50%; animation: spin 0.8s linear infinite;
     margin-bottom: 10px;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ===== FOOTER HUBUNGI KAMI ===== */
+  .footer {
+    margin-top: 30px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 22px 25px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    border-top: 4px solid #007bff;
+  }
+  .footer-title {
+    font-size: 16px;
+    color: #333;
+    margin: 0 0 14px 0;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .footer-sub {
+    font-size: 12px;
+    color: #888;
+    font-weight: normal;
+    margin-left: 4px;
+  }
+  .footer-contacts {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .contact-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 18px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    transition: 0.2s;
+    flex: 1;
+    min-width: 200px;
+    justify-content: center;
+  }
+  .contact-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+  .contact-btn .ic { font-size: 20px; }
+  .contact-wa { background: #25d366; }
+  .contact-wa:hover { background: #128c7e; }
+  .contact-ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+  .contact-ig:hover { filter: brightness(0.9); }
+  .footer-copy {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid #f0f0f0;
+    text-align: center;
+    font-size: 12px;
+    color: #999;
+  }
+
+  /* Toast */
+  @keyframes toastIn { from { opacity: 0; transform: translate(-50%, 20px); } to { opacity: 1; transform: translate(-50%, 0); } }
 
   @media (max-width: 500px) {
     .header h1 { font-size: 20px; letter-spacing: 2px; }
     .menu-grid { grid-template-columns: repeat(2, 1fr); }
     .item-grid { grid-template-columns: 1fr; }
     .nav-tab { padding: 8px 12px; font-size: 13px; }
+    .contact-btn { min-width: 100%; }
   }
 </style>
 </head>
@@ -525,6 +628,10 @@
       <div class="info">Login sebagai: <b id="userName"></b> (<span id="userRole"></span>)</div>
     </div>
     <div class="header-right">
+      <button id="btnCartHeader" class="btn-cart-header hidden" onclick="openCart()">
+        🛒 Keranjang
+        <span class="cart-badge hidden" id="cartBadgeHeader">0</span>
+      </button>
       <button class="btn-small btn-danger" onclick="logout()">Logout</button>
     </div>
   </div>
@@ -577,8 +684,6 @@
     </div>
 
     <div class="kalkulator-wrap">
-
-      <!-- KIRI: Input -->
       <div class="kalkulator-panel">
         <h3>📝 Input Transaksi</h3>
 
@@ -615,7 +720,6 @@
         </button>
       </div>
 
-      <!-- KANAN: Hasil -->
       <div class="kalkulator-panel hasil-panel">
         <h3>💰 Hasil Perhitungan</h3>
 
@@ -643,7 +747,6 @@
           <div class="kembali-value" id="kalKembaliValue">Rp 0</div>
         </div>
       </div>
-
     </div>
   </div>
 
@@ -684,6 +787,34 @@
           <tr><td colspan="5" style="text-align:center;color:#999;padding:30px;">Memuat data...</td></tr>
         </tbody>
       </table>
+    </div>
+  </div>
+
+  <!-- ================= FOOTER HUBUNGI KAMI ================= -->
+  <div class="footer">
+    <h3 class="footer-title">
+      📞 Hubungi Kami
+      <span class="footer-sub">— pesan, tanya, atau custom order langsung</span>
+    </h3>
+
+    <div class="footer-contacts">
+      <a class="contact-btn contact-wa"
+         href="https://wa.me/6287811101710?text=Halo%20HKPROJECT!%20Saya%20ingin%20bertanya."
+         target="_blank" rel="noopener">
+        <span class="ic">💬</span>
+        <span>WhatsApp — 0878-1110-1710</span>
+      </a>
+
+      <a class="contact-btn contact-ig"
+         href="https://instagram.com/hkproject28"
+         target="_blank" rel="noopener">
+        <span class="ic">📷</span>
+        <span>Instagram — @hkproject28</span>
+      </a>
+    </div>
+
+    <div class="footer-copy">
+      © <span id="tahunFooter"></span> HKPROJECT — Semua hak dilindungi
     </div>
   </div>
 
@@ -754,6 +885,26 @@
   </div>
 </div>
 
+<!-- ================= MODAL: KERANJANG (TAMU) ================= -->
+<div id="modalCart" class="modal hidden">
+  <div class="modal-content" style="max-width: 520px;">
+    <h3>🛒 Keranjang Pesanan</h3>
+
+    <div id="cartList" class="cart-list"></div>
+
+    <div id="cartTotalBox" class="cart-total-box">
+      <div class="ct-label">Total Belanja</div>
+      <div class="ct-value" id="cartTotalValue">Rp 0</div>
+    </div>
+
+    <div class="modal-actions" style="flex-wrap: wrap;">
+      <button class="btn-danger" onclick="closeCart()">Tutup</button>
+      <button class="btn-danger" onclick="kosongkanCart()">🗑️ Kosongkan</button>
+      <button class="btn-wa" style="flex: 1 0 100%;" onclick="checkoutWA()">💬 Pesan via WhatsApp</button>
+    </div>
+  </div>
+</div>
+
 <!-- ====== FIREBASE SDK ====== -->
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
@@ -791,9 +942,13 @@ function isAdmin() { return currentUser && currentUser.role === 'admin'; }
 
 document.getElementById('userName').textContent = currentUser.username;
 document.getElementById('userRole').textContent = currentUser.role.toUpperCase();
+document.getElementById('tahunFooter').textContent = new Date().getFullYear();
+
 if (isAdmin()) {
   document.getElementById('btnTambahMenu').classList.remove('hidden');
   document.getElementById('navTabs').classList.remove('hidden');
+} else {
+  document.getElementById('btnCartHeader').classList.remove('hidden');
 }
 
 /* ============================================================
@@ -809,29 +964,25 @@ function formatTanggal(iso) {
 function todayISO() { return new Date().toISOString().split('T')[0]; }
 
 /* ============================================================
-   FORMAT UANG OTOMATIS (200000 → 200.000)
+   FORMAT UANG OTOMATIS
 ============================================================ */
 function formatAngka(n) {
   if (n === '' || n === null || isNaN(n)) return '';
   return Number(n).toLocaleString('id-ID');
 }
-
 function parseAngka(str) {
   if (!str) return 0;
   const clean = String(str).replace(/\D/g, '');
   return clean ? parseInt(clean) : 0;
 }
-
 function formatInputUang(input) {
   const digits = input.value.replace(/\D/g, '');
   if (digits === '') { input.value = ''; return; }
   const limited = digits.slice(0, 13);
   input.value = Number(limited).toLocaleString('id-ID');
 }
-
 function setCash(amount) {
-  const input = document.getElementById('kalCash');
-  input.value = formatAngka(amount);
+  document.getElementById('kalCash').value = formatAngka(amount);
   hitungKalkulator();
 }
 
@@ -1039,6 +1190,19 @@ function listenItems(menuDocId) {
 }
 
 /* ============================================================
+   HITUNG HARGA SATUAN (QTY & PROMO)
+============================================================ */
+function hitungHargaSatuan(item, qty) {
+  if (item.promo && item.harga3 > 0 && qty >= 3) {
+    return Math.round(item.harga3 / 3);
+  }
+  if (item.promo) {
+    return Math.round(item.harga * 0.85);
+  }
+  return item.harga;
+}
+
+/* ============================================================
    RENDER ITEMS
 ============================================================ */
 function renderItems(items) {
@@ -1093,26 +1257,31 @@ function renderItems(items) {
     ` : '';
 
     const guestHTML = !admin ? `
-      <div class="guest-actions">
-        <button class="btn-wa" onclick='pesanWA(${JSON.stringify({
-          nama: p.nama,
-          harga: p.harga,
-          promo: !!p.promo,
-          harga3: p.harga3 || 0,
-          menuNama: menuNama
-        })})'>
-          💬 Pesan via WhatsApp
-        </button>
-        <button class="btn-ig" onclick='pesanIG(${JSON.stringify({
-          nama: p.nama,
-          harga: p.harga,
-          promo: !!p.promo,
-          harga3: p.harga3 || 0,
-          menuNama: menuNama
-        })})'>
-          📷 Instagram
-        </button>
+      <div class="qty-box">
+        <span class="qty-label">Jumlah:</span>
+        <div class="qty-control">
+          <button type="button" onclick="ubahQtyItem('${p.docId}', -1)">−</button>
+          <input type="number" id="qty_${p.docId}" value="1" min="1"
+            oninput="updateQtyPreview('${p.docId}', ${p.harga}, ${p.promo ? 'true' : 'false'}, ${p.harga3 || 0})">
+          <button type="button" onclick="ubahQtyItem('${p.docId}', 1)">+</button>
+        </div>
       </div>
+
+      <div class="qty-preview" id="preview_${p.docId}">
+        <span class="lbl">Subtotal:</span>
+        <span class="val" id="preview_val_${p.docId}">${rupiah(hitungHargaSatuan(p, 1))}</span>
+      </div>
+
+      <button class="btn-add-cart" onclick='tambahKeKeranjang(${JSON.stringify({
+        docId: p.docId,
+        nama: p.nama,
+        harga: p.harga,
+        promo: !!p.promo,
+        harga3: p.harga3 || 0,
+        menuNama: menuNama
+      })})'>
+        🛒 Tambah ke Keranjang
+      </button>
     ` : '';
 
     card.innerHTML = `
@@ -1129,50 +1298,205 @@ function renderItems(items) {
 }
 
 /* ============================================================
-   TOMBOL PEMESANAN (TAMU)
+   QTY SELECTOR
 ============================================================ */
-function susunPesan(item) {
-  let detail = '';
-  detail += `📦 Menu: ${item.menuNama}\n`;
-  detail += `🛍️ Item: ${item.nama}\n`;
-  detail += `💰 Harga Normal: ${rupiah(item.harga)}\n`;
-
-  if (item.promo && item.harga3 > 0) {
-    const diskon15 = Math.round(item.harga * 0.85);
-    const hemat    = item.harga - diskon15;
-    const perPcs   = Math.round(item.harga3 / 3);
-
-    detail += `\n🎉 PROMO TERSEDIA!\n`;
-    detail += `🔖 Diskon 15%: ${rupiah(diskon15)} (hemat ${rupiah(hemat)})\n`;
-    detail += `📦 Harga Beli 3: ${rupiah(perPcs)}/pcs\n`;
-    detail += `💵 Total Beli 3: ${rupiah(item.harga3)}\n`;
-  }
-
-  return `Halo HKPROJECT! 👋\n\nSaya ingin memesan:\n\n${detail}\n━━━━━━━━━━━━━━━\n\nMohon info ketersediaan dan cara pemesanan. Terima kasih! 🙏`;
+function ubahQtyItem(docId, delta) {
+  const input = document.getElementById('qty_' + docId);
+  let val = parseInt(input.value) || 1;
+  val += delta;
+  if (val < 1) val = 1;
+  input.value = val;
+  input.dispatchEvent(new Event('input'));
 }
 
-function pesanWA(item) {
-  const pesan = susunPesan(item);
+function updateQtyPreview(docId, harga, promo, harga3) {
+  const input = document.getElementById('qty_' + docId);
+  let qty = parseInt(input.value) || 1;
+  if (qty < 1) qty = 1;
+
+  const item = { harga, promo, harga3 };
+  const satuan = hitungHargaSatuan(item, qty);
+  const total = satuan * qty;
+
+  let text = `${qty} × ${rupiah(satuan)}`;
+  if (promo && qty >= 3 && harga3 > 0) text += ` ✅ grosir`;
+
+  document.getElementById('preview_val_' + docId).textContent = rupiah(total);
+  document.querySelector(`#preview_${docId} .lbl`).textContent = text;
+}
+
+/* ============================================================
+   KERANJANG
+============================================================ */
+let cart = JSON.parse(localStorage.getItem('hk_cart_v1') || '[]');
+
+function saveCart() {
+  localStorage.setItem('hk_cart_v1', JSON.stringify(cart));
+  updateCartBadge();
+}
+
+function updateCartBadge() {
+  const totalQty = cart.reduce((s, i) => s + i.qty, 0);
+  const badge = document.getElementById('cartBadgeHeader');
+  if (!badge) return;
+  if (totalQty > 0) {
+    badge.textContent = totalQty;
+    badge.classList.remove('hidden');
+  } else {
+    badge.classList.add('hidden');
+  }
+}
+
+function tambahKeKeranjang(item) {
+  const qtyInput = document.getElementById('qty_' + item.docId);
+  const qty = parseInt(qtyInput.value) || 1;
+
+  const satuan = hitungHargaSatuan(item, qty);
+  const subtotal = satuan * qty;
+
+  const idx = cart.findIndex(c => c.docId === item.docId);
+  if (idx !== -1) {
+    cart[idx].qty += qty;
+    cart[idx].satuan = hitungHargaSatuan(item, cart[idx].qty);
+    cart[idx].subtotal = cart[idx].satuan * cart[idx].qty;
+  } else {
+    cart.push({
+      docId: item.docId,
+      nama: item.nama,
+      menuNama: item.menuNama,
+      harga: item.harga,
+      promo: item.promo,
+      harga3: item.harga3,
+      qty: qty,
+      satuan: satuan,
+      subtotal: subtotal
+    });
+  }
+
+  saveCart();
+  qtyInput.value = 1;
+  qtyInput.dispatchEvent(new Event('input'));
+
+  tampilToast(`✅ "${item.nama}" (${qty} pcs) masuk keranjang`);
+}
+
+function tampilToast(msg) {
+  const t = document.createElement('div');
+  t.textContent = msg;
+  t.style.cssText = `
+    position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+    background: #28a745; color: #fff; padding: 12px 22px; border-radius: 10px;
+    font-size: 14px; font-weight: 600; z-index: 999;
+    box-shadow: 0 5px 20px rgba(40,167,69,0.4);
+    animation: toastIn 0.3s ease;
+  `;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2200);
+}
+
+function openCart() {
+  renderCart();
+  document.getElementById('modalCart').classList.remove('hidden');
+}
+
+function closeCart() {
+  document.getElementById('modalCart').classList.add('hidden');
+}
+
+function renderCart() {
+  const listEl = document.getElementById('cartList');
+  const totalEl = document.getElementById('cartTotalValue');
+
+  if (cart.length === 0) {
+    listEl.innerHTML = `
+      <div class="cart-empty">
+        <div class="icon-big">🛒</div>
+        <div>Keranjang masih kosong</div>
+        <div style="font-size:12px;margin-top:6px;">Tambah produk dulu yuk!</div>
+      </div>`;
+    totalEl.textContent = 'Rp 0';
+    return;
+  }
+
+  listEl.innerHTML = '';
+  let grand = 0;
+
+  cart.forEach((c, idx) => {
+    grand += c.subtotal;
+    const div = document.createElement('div');
+    div.className = 'cart-row';
+    div.innerHTML = `
+      <div class="cart-info">
+        <div class="cart-nama">${escapeHtml(c.nama)}</div>
+        <div class="cart-detail">${escapeHtml(c.menuNama)} · ${rupiah(c.satuan)}/pcs</div>
+      </div>
+      <div class="cart-qty-mini">
+        <button type="button" onclick="ubahQtyCart(${idx}, -1)">−</button>
+        <span>${c.qty}</span>
+        <button type="button" onclick="ubahQtyCart(${idx}, 1)">+</button>
+      </div>
+      <div class="cart-subtotal">${rupiah(c.subtotal)}</div>
+      <button type="button" class="cart-hapus" onclick="hapusDariCart(${idx})">×</button>
+    `;
+    listEl.appendChild(div);
+  });
+
+  totalEl.textContent = rupiah(grand);
+}
+
+function ubahQtyCart(idx, delta) {
+  if (!cart[idx]) return;
+  cart[idx].qty += delta;
+  if (cart[idx].qty < 1) cart[idx].qty = 1;
+
+  const satuan = hitungHargaSatuan(cart[idx], cart[idx].qty);
+  cart[idx].satuan = satuan;
+  cart[idx].subtotal = satuan * cart[idx].qty;
+
+  saveCart();
+  renderCart();
+}
+
+function hapusDariCart(idx) {
+  cart.splice(idx, 1);
+  saveCart();
+  renderCart();
+}
+
+function kosongkanCart() {
+  if (!confirm('Kosongkan semua keranjang?')) return;
+  cart = [];
+  saveCart();
+  renderCart();
+}
+
+function checkoutWA() {
+  if (cart.length === 0) { alert('Keranjang masih kosong!'); return; }
+
+  let pesan = 'Halo HKPROJECT! 👋\n\n';
+  pesan += 'Saya ingin memesan:\n\n';
+
+  let grand = 0;
+  cart.forEach((c, i) => {
+    grand += c.subtotal;
+    pesan += `${i + 1}. 📦 *${c.nama}*\n`;
+    pesan += `   Menu: ${c.menuNama}\n`;
+    pesan += `   Jumlah: ${c.qty} pcs\n`;
+    pesan += `   Harga satuan: ${rupiah(c.satuan)}\n`;
+    pesan += `   Subtotal: *${rupiah(c.subtotal)}*\n\n`;
+  });
+
+  pesan += '━━━━━━━━━━━━━━━\n';
+  pesan += `💰 *TOTAL: ${rupiah(grand)}*\n`;
+  pesan += '━━━━━━━━━━━━━━━\n\n';
+  pesan += 'Mohon info ketersediaan dan cara pemesanan. Terima kasih! 🙏';
+
   const url = `https://wa.me/${KONTAK.wa}?text=${encodeURIComponent(pesan)}`;
   window.open(url, '_blank');
 }
 
-function pesanIG(item) {
-  const pesan = susunPesan(item);
-
-  navigator.clipboard.writeText(pesan)
-    .then(() => {
-      alert('✅ Detail pesanan sudah dicopy!\n\nSilakan klik OK, lalu paste (Ctrl+V / long-press) di DM Instagram @' + KONTAK.ig);
-      window.open(`https://instagram.com/${KONTAK.ig}`, '_blank');
-    })
-    .catch(() => {
-      alert('Detail pesanan:\n\n' + pesan + '\n\nSilakan copy manual lalu kirim di DM Instagram @' + KONTAK.ig);
-      window.open(`https://instagram.com/${KONTAK.ig}`, '_blank');
-    });
-}
-
 /* ============================================================
-   KALKULATOR KASIR (HALAMAN TERPISAH)
+   KALKULATOR KASIR
 ============================================================ */
 async function isiDropdownKalkulator() {
   const dropdown = document.getElementById('kalProduk');
@@ -1605,6 +1929,7 @@ function logout() {
    MULAI
 ============================================================ */
 (async function start() {
+  updateCartBadge();
   if (isAdmin()) await seedIfEmpty();
   listenMenus();
 })();
