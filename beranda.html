@@ -34,6 +34,34 @@
   .header h1 { margin: 0; letter-spacing: 3px; font-size: 26px; }
   .header .info { font-size: 14px; opacity: 0.95; margin-top: 4px; }
   .header .info b { text-transform: uppercase; }
+  .header-right { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  /* ===== NAV TABS (KHUSUS ADMIN) ===== */
+  .nav-tabs {
+    background: #fff;
+    border-radius: 12px;
+    padding: 6px;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 6px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    flex-wrap: wrap;
+  }
+  .nav-tab {
+    padding: 10px 18px;
+    border-radius: 8px;
+    background: transparent;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.2s;
+    width: auto;
+    margin: 0;
+  }
+  .nav-tab:hover { background: #f0f2f5; color: #007bff; }
+  .nav-tab.active { background: #007bff; color: #fff; }
 
   button {
     padding: 10px 15px;
@@ -58,6 +86,10 @@
   .btn-warning:hover { background: #d39e00; }
   .btn-back { background: #6c757d; }
   .btn-back:hover { background: #495057; }
+  .btn-wa { background: #25d366; }
+  .btn-wa:hover { background: #128c7e; }
+  .btn-ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+  .btn-ig:hover { filter: brightness(0.9); }
 
   /* ===== TOOLBAR ===== */
   .toolbar {
@@ -74,7 +106,7 @@
   }
   .toolbar h2 { margin: 0; color: #333; font-size: 18px; }
 
-  /* ===== GRID MENU UTAMA ===== */
+  /* ===== GRID MENU ===== */
   .menu-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -95,42 +127,12 @@
     transform: translateY(-5px);
     box-shadow: 0 8px 22px rgba(0,123,255,0.25);
   }
-  .menu-card.promo { border-top-color: #28a745; }
-  .menu-card .icon {
-    font-size: 42px;
-    margin-bottom: 12px;
-    display: block;
-  }
-  .menu-card .title {
-    font-size: 17px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 6px;
-    word-break: break-word;
-  }
-  .menu-card .sub {
-    font-size: 12px;
-    color: #888;
-  }
-  .menu-card .promo-badge {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: #28a745;
-    color: #fff;
-    font-size: 10px;
-    padding: 2px 8px;
-    border-radius: 10px;
-    font-weight: bold;
-  }
-  .menu-card .menu-actions {
-    margin-top: 14px;
-    display: flex;
-    gap: 6px;
-    justify-content: center;
-  }
+  .menu-card .icon { font-size: 42px; margin-bottom: 12px; display: block; }
+  .menu-card .title { font-size: 17px; font-weight: bold; color: #333; margin-bottom: 6px; word-break: break-word; }
+  .menu-card .sub { font-size: 12px; color: #888; }
+  .menu-card .menu-actions { margin-top: 14px; display: flex; gap: 6px; justify-content: center; }
 
-  /* ===== HALAMAN DETAIL MENU ===== */
+  /* ===== HALAMAN DETAIL ===== */
   .detail-header {
     background: #fff;
     padding: 18px 22px;
@@ -144,19 +146,12 @@
     gap: 10px;
     border-left: 5px solid #007bff;
   }
-  .detail-header h2 {
-    margin: 0;
-    color: #007bff;
-    font-size: 22px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .detail-header .actions { display: flex; gap: 8px; }
+  .detail-header h2 { margin: 0; color: #007bff; font-size: 22px; display: flex; align-items: center; gap: 10px; }
+  .detail-header .actions { display: flex; gap: 8px; flex-wrap: wrap; }
 
   .item-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
     gap: 18px;
   }
   .item-card {
@@ -209,7 +204,16 @@
     display: flex;
     gap: 6px;
     justify-content: flex-end;
+    flex-wrap: wrap;
   }
+  .item-card .guest-actions {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid #eee;
+    display: flex;
+    gap: 8px;
+  }
+  .item-card .guest-actions button { flex: 1; }
 
   .badge {
     display: inline-block;
@@ -223,6 +227,97 @@
     vertical-align: middle;
   }
   .badge-green { background: #28a745; color: #fff; }
+
+  /* ===== KALKULATOR KASIR (di dalam item card admin) ===== */
+  .kalkulator-box {
+    margin-top: 12px;
+    padding: 12px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+  }
+  .kalkulator-box label {
+    display: block;
+    font-size: 12px;
+    color: #555;
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+  .kalkulator-box input {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: inherit;
+  }
+  .kalkulator-box .hasil {
+    margin-top: 8px;
+    font-size: 13px;
+    color: #333;
+    line-height: 1.7;
+  }
+  .kalkulator-box .hasil b { color: #007bff; }
+  .kalkulator-box .kembalian {
+    font-weight: bold;
+    font-size: 16px;
+    padding: 8px;
+    border-radius: 6px;
+    text-align: center;
+    margin-top: 8px;
+  }
+  .kembalian.ok { background: #e8f5e9; color: #28a745; border: 1px solid #28a745; }
+  .kembalian.kurang { background: #ffebee; color: #dc3545; border: 1px solid #dc3545; }
+
+  /* ===== HALAMAN KEUANGAN ===== */
+  .keuangan-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .summary-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    border-left: 5px solid #007bff;
+  }
+  .summary-card.masuk { border-left-color: #28a745; }
+  .summary-card.keluar { border-left-color: #dc3545; }
+  .summary-card.saldo { border-left-color: #ffc107; background: #fffef5; }
+  .summary-card .label { font-size: 13px; color: #666; margin-bottom: 6px; }
+  .summary-card .value { font-size: 22px; font-weight: bold; color: #333; }
+  .summary-card.masuk .value { color: #28a745; }
+  .summary-card.keluar .value { color: #dc3545; }
+  .summary-card.saldo .value { color: #d39e00; }
+
+  .keuangan-table {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    overflow: hidden;
+  }
+  .keuangan-table table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .keuangan-table th {
+    background: #f8f9fa;
+    padding: 12px;
+    text-align: left;
+    font-size: 13px;
+    color: #555;
+    border-bottom: 2px solid #eee;
+  }
+  .keuangan-table td {
+    padding: 12px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 14px;
+  }
+  .keuangan-table tr:last-child td { border-bottom: none; }
+  .keuangan-table .td-masuk { color: #28a745; font-weight: 600; }
+  .keuangan-table .td-keluar { color: #dc3545; font-weight: 600; }
 
   /* ===== MODAL ===== */
   .modal {
@@ -247,7 +342,7 @@
   .modal-content h3 { margin-top: 0; color: #007bff; }
   .modal-content label { display: block; margin: 10px 0 4px; font-size: 13px; color: #555; font-weight: 600; }
   .modal-content small { color: #888; font-weight: normal; }
-  .modal-content input, .modal-content select {
+  .modal-content input, .modal-content select, .modal-content textarea {
     width: 100%;
     padding: 10px;
     margin: 8px 0;
@@ -269,12 +364,7 @@
     border-radius: 6px;
     cursor: pointer;
   }
-  .checkbox-wrap input[type="checkbox"] {
-    width: auto;
-    margin: 0;
-    cursor: pointer;
-    transform: scale(1.2);
-  }
+  .checkbox-wrap input[type="checkbox"] { width: auto; margin: 0; cursor: pointer; transform: scale(1.2); }
 
   .hidden { display: none !important; }
 
@@ -302,6 +392,7 @@
     .header h1 { font-size: 20px; letter-spacing: 2px; }
     .menu-grid { grid-template-columns: repeat(2, 1fr); }
     .item-grid { grid-template-columns: 1fr; }
+    .nav-tab { padding: 8px 12px; font-size: 13px; }
   }
 </style>
 </head>
@@ -309,12 +400,21 @@
 
 <div class="container">
 
+  <!-- HEADER -->
   <div class="header">
     <div>
       <h1>HKPROJECT</h1>
       <div class="info">Login sebagai: <b id="userName"></b> (<span id="userRole"></span>)</div>
     </div>
-    <button class="btn-small btn-danger" onclick="logout()">Logout</button>
+    <div class="header-right">
+      <button class="btn-small btn-danger" onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <!-- NAV TABS (hanya muncul untuk admin) -->
+  <div id="navTabs" class="nav-tabs hidden">
+    <button class="nav-tab active" data-tab="produk" onclick="switchTab('produk')">📦 Produk</button>
+    <button class="nav-tab" data-tab="keuangan" onclick="switchTab('keuangan')">💰 Keuangan</button>
   </div>
 
   <!-- ================= HALAMAN 1: MENU UTAMA ================= -->
@@ -350,19 +450,56 @@
     <div id="itemGrid" class="item-grid"></div>
   </div>
 
+  <!-- ================= HALAMAN 3: KEUANGAN (KHUSUS ADMIN) ================= -->
+  <div id="pageKeuangan" class="hidden">
+    <div class="toolbar">
+      <h2>💰 Catatan Keuangan</h2>
+      <button class="btn-small btn-success" onclick="openTambahKeuanganModal()">➕ Tambah Catatan</button>
+    </div>
+
+    <div class="keuangan-summary">
+      <div class="summary-card masuk">
+        <div class="label">💵 Total Pemasukan</div>
+        <div class="value" id="totalMasuk">Rp 0</div>
+      </div>
+      <div class="summary-card keluar">
+        <div class="label">💸 Total Pengeluaran</div>
+        <div class="value" id="totalKeluar">Rp 0</div>
+      </div>
+      <div class="summary-card saldo">
+        <div class="label">💰 Saldo Akhir</div>
+        <div class="value" id="totalSaldo">Rp 0</div>
+      </div>
+    </div>
+
+    <div class="keuangan-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Tanggal</th>
+            <th>Keterangan</th>
+            <th>Jenis</th>
+            <th style="text-align:right;">Jumlah</th>
+            <th style="text-align:center;">Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="keuanganBody">
+          <tr><td colspan="5" style="text-align:center;color:#999;padding:30px;">Memuat data...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
 </div>
 
 <!-- ================= MODAL: TAMBAH/EDIT MENU ================= -->
 <div id="modalMenu" class="modal hidden">
   <div class="modal-content">
     <h3 id="modalMenuTitle">➕ Tambah Menu</h3>
-
     <label>Nama Menu</label>
     <input type="text" id="menuNama" placeholder="Contoh: Jersey">
-
     <label>Icon (Emoji)</label>
     <input type="text" id="menuIcon" placeholder="Contoh: 👕" maxlength="4" value="📦">
-
     <div class="modal-actions">
       <button class="btn-danger" onclick="closeModalMenu()">Batal</button>
       <button class="btn-success" onclick="simpanMenu()">Simpan</button>
@@ -374,26 +511,48 @@
 <div id="modalItem" class="modal hidden">
   <div class="modal-content">
     <h3 id="modalItemTitle">➕ Tambah Item</h3>
-
     <label>Nama Item</label>
     <input type="text" id="inNama" placeholder="Contoh: Jersey Printing">
-
     <label>Harga Normal (Rp)</label>
     <input type="number" id="inHarga" placeholder="Contoh: 150000" min="0">
-
     <label class="checkbox-wrap">
       <input type="checkbox" id="inPromo">
       <span>Aktifkan <b>Diskon 15%</b> & <b>Harga Beli 3</b></span>
     </label>
-
     <div id="promoFields" class="hidden">
       <label>Harga Beli 3 (Rp) <small>— total untuk 3 pcs</small></label>
       <input type="number" id="inHarga3" placeholder="Contoh: 400000" min="0">
     </div>
-
     <div class="modal-actions">
       <button class="btn-danger" onclick="closeModalItem()">Batal</button>
       <button class="btn-success" id="btnSimpanItem" onclick="simpanItem()">Simpan</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MODAL: TAMBAH KEUANGAN ================= -->
+<div id="modalKeuangan" class="modal hidden">
+  <div class="modal-content">
+    <h3>➕ Tambah Catatan Keuangan</h3>
+
+    <label>Jenis</label>
+    <select id="inJenis">
+      <option value="masuk">💵 Pemasukan</option>
+      <option value="keluar">💸 Pengeluaran</option>
+    </select>
+
+    <label>Keterangan</label>
+    <input type="text" id="inKeterangan" placeholder="Contoh: Penjualan Jersey">
+
+    <label>Jumlah (Rp)</label>
+    <input type="number" id="inJumlah" placeholder="Contoh: 500000" min="0">
+
+    <label>Tanggal</label>
+    <input type="date" id="inTanggal">
+
+    <div class="modal-actions">
+      <button class="btn-danger" onclick="closeModalKeuangan()">Batal</button>
+      <button class="btn-success" onclick="simpanKeuangan()">Simpan</button>
     </div>
   </div>
 </div>
@@ -419,6 +578,14 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 /* ============================================================
+   KONTAK PEMESANAN
+============================================================ */
+const KONTAK = {
+  wa: '6287811101710',       // format internasional tanpa +
+  ig: 'hkproject28'
+};
+
+/* ============================================================
    GUARD
 ============================================================ */
 const currentUser = JSON.parse(sessionStorage.getItem('user') || 'null');
@@ -432,6 +599,7 @@ document.getElementById('userName').textContent = currentUser.username;
 document.getElementById('userRole').textContent = currentUser.role.toUpperCase();
 if (isAdmin()) {
   document.getElementById('btnTambahMenu').classList.remove('hidden');
+  document.getElementById('navTabs').classList.remove('hidden');
 }
 
 /* ============================================================
@@ -439,61 +607,70 @@ if (isAdmin()) {
 ============================================================ */
 function rupiah(n) { return 'Rp ' + Number(n || 0).toLocaleString('id-ID'); }
 function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function formatTanggal(iso) {
+  if (!iso) return '-';
+  const d = new Date(iso);
+  return d.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+}
+function todayISO() {
+  const d = new Date();
+  return d.toISOString().split('T')[0];
+}
+
+/* ============================================================
+   NAV TAB (Produk / Keuangan)
+============================================================ */
+function switchTab(tab) {
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+
+  document.getElementById('pageMenu').classList.add('hidden');
+  document.getElementById('pageDetail').classList.add('hidden');
+  document.getElementById('pageKeuangan').classList.add('hidden');
+
+  if (tab === 'produk') {
+    document.getElementById('pageMenu').classList.remove('hidden');
+  } else if (tab === 'keuangan') {
+    document.getElementById('pageKeuangan').classList.remove('hidden');
+    listenKeuangan();
+  }
+}
 
 /* ============================================================
    STATE
 ============================================================ */
-let activeMenuId = null;   // docId menu yang sedang dibuka
-let menusCache = [];       // cache menu untuk cari icon/nama
+let activeMenuId = null;
+let menusCache = [];
 
 /* ============================================================
-   SEED DATA DEFAULT (MENU + ITEM)
+   SEED DATA DEFAULT
 ============================================================ */
 const DEFAULT_MENUS = [
-  {
-    nama: 'Jersey', icon: '👕',
-    items: [
-      { nama: 'Jersey Printing', harga: 150000, promo: true,  harga3: 400000 },
-      { nama: 'Jersey Futsal',   harga: 140000, promo: true,  harga3: 380000 },
-      { nama: 'Jersey Polo',     harga: 160000, promo: true,  harga3: 420000 }
-    ]
-  },
-  {
-    nama: 'Kemeja', icon: '👔',
-    items: [
-      { nama: 'Kemeja Custom',     harga: 180000, promo: true,  harga3: 480000 },
-      { nama: 'Kemeja Formal',     harga: 200000, promo: true,  harga3: 540000 },
-      { nama: 'Kemeja Batik',      harga: 220000, promo: true,  harga3: 600000 }
-    ]
-  },
-  {
-    nama: 'Cetak Foto', icon: '🖼️',
-    items: [
-      { nama: 'Cetak Foto 4R',  harga: 25000, promo: false, harga3: 0 },
-      { nama: 'Cetak Foto 10R', harga: 45000, promo: false, harga3: 0 }
-    ]
-  },
-  {
-    nama: 'Gantungan Kunci', icon: '🔑',
-    items: [
-      { nama: 'Gantungan Akrilik', harga: 15000, promo: false, harga3: 0 },
-      { nama: 'Gantungan Logam',   harga: 25000, promo: false, harga3: 0 }
-    ]
-  },
-  {
-    nama: 'ID Card Lanyard', icon: '🆔',
-    items: [
-      { nama: 'ID Card Standard', harga: 35000, promo: false, harga3: 0 },
-      { nama: 'Lanyard Custom',   harga: 45000, promo: false, harga3: 0 }
-    ]
-  },
-  {
-    nama: 'Papan Nama / Nametag', icon: '🏷️',
-    items: [
-      { nama: 'Nametag Akrilik',   harga: 45000, promo: false, harga3: 0 },
-      { nama: 'Nametag Bordir',    harga: 55000, promo: false, harga3: 0 }
-    ]
-  }
+  { nama: 'Jersey', icon: '👕', items: [
+    { nama: 'Jersey Printing', harga: 150000, promo: true,  harga3: 400000 },
+    { nama: 'Jersey Futsal',   harga: 140000, promo: true,  harga3: 380000 },
+    { nama: 'Jersey Polo',     harga: 160000, promo: true,  harga3: 420000 }
+  ]},
+  { nama: 'Kemeja', icon: '👔', items: [
+    { nama: 'Kemeja Custom', harga: 180000, promo: true,  harga3: 480000 },
+    { nama: 'Kemeja Formal', harga: 200000, promo: true,  harga3: 540000 },
+    { nama: 'Kemeja Batik',  harga: 220000, promo: true,  harga3: 600000 }
+  ]},
+  { nama: 'Cetak Foto', icon: '🖼️', items: [
+    { nama: 'Cetak Foto 4R',  harga: 25000, promo: false, harga3: 0 },
+    { nama: 'Cetak Foto 10R', harga: 45000, promo: false, harga3: 0 }
+  ]},
+  { nama: 'Gantungan Kunci', icon: '🔑', items: [
+    { nama: 'Gantungan Akrilik', harga: 15000, promo: false, harga3: 0 },
+    { nama: 'Gantungan Logam',   harga: 25000, promo: false, harga3: 0 }
+  ]},
+  { nama: 'ID Card Lanyard', icon: '🆔', items: [
+    { nama: 'ID Card Standard', harga: 35000, promo: false, harga3: 0 },
+    { nama: 'Lanyard Custom',   harga: 45000, promo: false, harga3: 0 }
+  ]},
+  { nama: 'Papan Nama / Nametag', icon: '🏷️', items: [
+    { nama: 'Nametag Akrilik', harga: 45000, promo: false, harga3: 0 },
+    { nama: 'Nametag Bordir',  harga: 55000, promo: false, harga3: 0 }
+  ]}
 ];
 
 async function seedIfEmpty() {
@@ -510,7 +687,7 @@ async function seedIfEmpty() {
         });
       });
       await batch.commit();
-      console.log('✅ Seed menu + items berhasil.');
+      console.log('✅ Seed data default berhasil.');
     }
   } catch (err) {
     console.warn('Seed gagal:', err);
@@ -518,45 +695,39 @@ async function seedIfEmpty() {
 }
 
 /* ============================================================
-   LISTEN MENUS (real-time)
+   LISTEN MENUS
 ============================================================ */
 let unsubscribeMenus = null;
 
 function listenMenus() {
   if (unsubscribeMenus) unsubscribeMenus();
 
-  unsubscribeMenus = db.collection('menus')
-    .orderBy('nama')
-    .onSnapshot(
-      (snapshot) => {
-        menusCache = [];
-        snapshot.forEach(doc => {
-          menusCache.push({ docId: doc.id, ...doc.data() });
-        });
-        renderMenus(menusCache);
+  unsubscribeMenus = db.collection('menus').orderBy('nama').onSnapshot(
+    (snapshot) => {
+      menusCache = [];
+      snapshot.forEach(doc => menusCache.push({ docId: doc.id, ...doc.data() }));
+      renderMenus(menusCache);
 
-        // Kalau sedang buka detail, refresh detail juga
-        if (activeMenuId) {
-          const m = menusCache.find(x => x.docId === activeMenuId);
-          if (m) {
-            document.getElementById('detailTitle').textContent = m.nama;
-            document.getElementById('detailIcon').textContent = m.icon || '📦';
-          } else {
-            // Menu dihapus → kembali ke daftar
-            kembaliKeMenu();
-          }
+      if (activeMenuId) {
+        const m = menusCache.find(x => x.docId === activeMenuId);
+        if (m) {
+          document.getElementById('detailTitle').textContent = m.nama;
+          document.getElementById('detailIcon').textContent = m.icon || '📦';
+        } else {
+          kembaliKeMenu();
         }
-      },
-      (error) => {
-        console.error('Firestore error:', error);
-        document.getElementById('menuGrid').innerHTML =
-          `<div class="empty">⚠️ Gagal memuat menu.<br><small>${escapeHtml(error.message)}</small></div>`;
       }
-    );
+    },
+    (error) => {
+      console.error('Firestore error:', error);
+      document.getElementById('menuGrid').innerHTML =
+        `<div class="empty">⚠️ Gagal memuat menu.<br><small>${escapeHtml(error.message)}</small></div>`;
+    }
+  );
 }
 
 /* ============================================================
-   RENDER DAFTAR MENU
+   RENDER MENUS
 ============================================================ */
 function renderMenus(menus) {
   const admin = isAdmin();
@@ -574,8 +745,8 @@ function renderMenus(menus) {
 
     const actions = admin ? `
       <div class="menu-actions">
-        <button class="btn-small btn-warning" onclick="event.stopPropagation(); openEditMenuModal('${m.docId}')">✏️ Edit</button>
-        <button class="btn-small btn-danger" onclick="event.stopPropagation(); hapusMenu('${m.docId}', '${escapeHtml(m.nama)}')">🗑️ Hapus</button>
+        <button class="btn-small btn-warning" onclick="event.stopPropagation(); openEditMenuModal('${m.docId}')">✏️</button>
+        <button class="btn-small btn-danger" onclick="event.stopPropagation(); hapusMenu('${m.docId}', '${escapeHtml(m.nama)}')">🗑️</button>
       </div>
     ` : '';
 
@@ -585,7 +756,6 @@ function renderMenus(menus) {
       <div class="sub">Klik untuk lihat isi →</div>
       ${actions}
     `;
-
     card.addEventListener('click', () => bukaMenu(m.docId));
     grid.appendChild(card);
   });
@@ -602,12 +772,12 @@ function bukaMenu(menuDocId) {
     document.getElementById('detailIcon').textContent = m.icon || '📦';
   }
 
-  // Tampilkan tombol tambah item untuk admin
   const btnTambahItem = document.getElementById('btnTambahItem');
   if (isAdmin()) btnTambahItem.classList.remove('hidden');
   else btnTambahItem.classList.add('hidden');
 
   document.getElementById('pageMenu').classList.add('hidden');
+  document.getElementById('pageKeuangan').classList.add('hidden');
   document.getElementById('pageDetail').classList.remove('hidden');
 
   listenItems(menuDocId);
@@ -621,7 +791,7 @@ function kembaliKeMenu() {
 }
 
 /* ============================================================
-   LISTEN ITEMS DI DALAM MENU
+   LISTEN ITEMS
 ============================================================ */
 let unsubscribeItems = null;
 
@@ -689,10 +859,31 @@ function renderItems(items) {
       `;
     }
 
+    // Tombol admin + kalkulator
     const adminHTML = admin ? `
       <div class="admin-actions">
         <button class="btn-small btn-warning" onclick="openEditItemModal('${p.docId}')">✏️ Edit</button>
         <button class="btn-small btn-danger" onclick="hapusItem('${p.docId}', '${escapeHtml(p.nama)}')">🗑️ Hapus</button>
+      </div>
+      <div class="kalkulator-box">
+        <label>🧮 Kalkulator Kasir — Uang Cash</label>
+        <input type="number" placeholder="Contoh: 100000" min="0"
+          oninput="hitungKembalian(this, ${p.harga}, 'hasil_${p.docId}')">
+        <div class="hasil" id="hasil_${p.docId}">
+          <small style="color:#888;">Masukkan uang cash untuk menghitung kembalian</small>
+        </div>
+      </div>
+    ` : '';
+
+    // Tombol pemesanan (tamu)
+    const guestHTML = !admin ? `
+      <div class="guest-actions">
+        <button class="btn-wa" onclick="pesanWA('${escapeHtml(p.nama)}', ${p.harga})">
+          💬 Pesan via WhatsApp
+        </button>
+        <button class="btn-ig" onclick="pesanIG('${escapeHtml(p.nama)}')">
+          📷 Instagram
+        </button>
       </div>
     ` : '';
 
@@ -703,9 +894,53 @@ function renderItems(items) {
       </h3>
       ${hargaHTML}
       ${adminHTML}
+      ${guestHTML}
     `;
     grid.appendChild(card);
   });
+}
+
+/* ============================================================
+   KALKULATOR KASIR
+============================================================ */
+function hitungKembalian(inputEl, harga, targetId) {
+  const cash = parseInt(inputEl.value);
+  const hasil = document.getElementById(targetId);
+
+  if (isNaN(cash) || cash === 0) {
+    hasil.innerHTML = '<small style="color:#888;">Masukkan uang cash untuk menghitung kembalian</small>';
+    return;
+  }
+
+  const kembali = cash - harga;
+
+  if (kembali >= 0) {
+    hasil.innerHTML = `
+      <div>Harga: <b>${rupiah(harga)}</b></div>
+      <div>Uang Cash: <b>${rupiah(cash)}</b></div>
+      <div class="kembalian ok">💰 Kembalian: ${rupiah(kembali)}</div>
+    `;
+  } else {
+    hasil.innerHTML = `
+      <div>Harga: <b>${rupiah(harga)}</b></div>
+      <div>Uang Cash: <b>${rupiah(cash)}</b></div>
+      <div class="kembalian kurang">⚠️ Kurang: ${rupiah(Math.abs(kembali))}</div>
+    `;
+  }
+}
+
+/* ============================================================
+   TOMBOL PEMESANAN (TAMU)
+============================================================ */
+function pesanWA(namaItem, harga) {
+  const pesan = `Halo HKPROJECT! 👋\n\nSaya ingin memesan:\n📦 *${namaItem}*\n💰 Harga: ${rupiah(harga)}\n\nMohon info ketersediaan dan cara pemesanan. Terima kasih!`;
+  const url = `https://wa.me/${KONTAK.wa}?text=${encodeURIComponent(pesan)}`;
+  window.open(url, '_blank');
+}
+
+function pesanIG(namaItem) {
+  const url = `https://instagram.com/${KONTAK.ig}`;
+  window.open(url, '_blank');
 }
 
 /* ============================================================
@@ -738,7 +973,6 @@ function closeModalMenu() { document.getElementById('modalMenu').classList.add('
 
 async function simpanMenu() {
   if (!isAdmin()) return;
-
   const mode   = document.getElementById('modalMenu').dataset.mode;
   const editId = document.getElementById('modalMenu').dataset.editId;
   const nama   = document.getElementById('menuNama').value.trim();
@@ -763,7 +997,6 @@ async function hapusMenu(docId, nama) {
   if (!confirm(`Hapus menu "${nama}" beserta semua item di dalamnya?`)) return;
 
   try {
-    // Hapus semua items dulu
     const itemsSnap = await db.collection('menus').doc(docId).collection('items').get();
     const batch = db.batch();
     itemsSnap.forEach(it => batch.delete(it.ref));
@@ -775,7 +1008,7 @@ async function hapusMenu(docId, nama) {
 }
 
 /* ============================================================
-   MODAL ITEM (TAMBAH/EDIT)
+   MODAL ITEM
 ============================================================ */
 function openTambahItemModal() {
   if (!isAdmin() || !activeMenuId) return;
@@ -856,6 +1089,115 @@ async function hapusItem(docId, nama) {
 
   try {
     await db.collection('menus').doc(activeMenuId).collection('items').doc(docId).delete();
+  } catch (err) {
+    alert('Gagal hapus: ' + err.message);
+  }
+}
+
+/* ============================================================
+   KEUANGAN (KHUSUS ADMIN)
+============================================================ */
+let unsubscribeKeuangan = null;
+let keuanganCache = [];
+
+function listenKeuangan() {
+  if (!isAdmin()) return;
+  if (unsubscribeKeuangan) unsubscribeKeuangan();
+
+  unsubscribeKeuangan = db.collection('keuangan')
+    .orderBy('tanggal', 'desc')
+    .onSnapshot(
+      (snapshot) => {
+        keuanganCache = [];
+        snapshot.forEach(doc => keuanganCache.push({ docId: doc.id, ...doc.data() }));
+        renderKeuangan(keuanganCache);
+      },
+      (error) => {
+        console.error('Keuangan error:', error);
+        document.getElementById('keuanganBody').innerHTML =
+          `<tr><td colspan="5" style="text-align:center;color:#dc3545;padding:30px;">
+            ⚠️ Gagal memuat: ${escapeHtml(error.message)}
+          </td></tr>`;
+      }
+    );
+}
+
+function renderKeuangan(list) {
+  const tbody = document.getElementById('keuanganBody');
+  tbody.innerHTML = '';
+
+  let totalMasuk = 0;
+  let totalKeluar = 0;
+
+  if (!list || list.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#999;padding:30px;">Belum ada catatan keuangan.</td></tr>';
+    document.getElementById('totalMasuk').textContent = rupiah(0);
+    document.getElementById('totalKeluar').textContent = rupiah(0);
+    document.getElementById('totalSaldo').textContent = rupiah(0);
+    return;
+  }
+
+  list.forEach(k => {
+    if (k.jenis === 'masuk') totalMasuk += k.jumlah;
+    else totalKeluar += k.jumlah;
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${formatTanggal(k.tanggal)}</td>
+      <td>${escapeHtml(k.keterangan)}</td>
+      <td>${k.jenis === 'masuk' ? '<span style="color:#28a745;">💵 Masuk</span>' : '<span style="color:#dc3545;">💸 Keluar</span>'}</td>
+      <td style="text-align:right;" class="${k.jenis === 'masuk' ? 'td-masuk' : 'td-keluar'}">
+        ${k.jenis === 'masuk' ? '+' : '-'} ${rupiah(k.jumlah)}
+      </td>
+      <td style="text-align:center;">
+        <button class="btn-small btn-danger" onclick="hapusKeuangan('${k.docId}')">🗑️</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  document.getElementById('totalMasuk').textContent = rupiah(totalMasuk);
+  document.getElementById('totalKeluar').textContent = rupiah(totalKeluar);
+  document.getElementById('totalSaldo').textContent = rupiah(totalMasuk - totalKeluar);
+}
+
+function openTambahKeuanganModal() {
+  if (!isAdmin()) return;
+  document.getElementById('inJenis').value = 'masuk';
+  document.getElementById('inKeterangan').value = '';
+  document.getElementById('inJumlah').value = '';
+  document.getElementById('inTanggal').value = todayISO();
+  document.getElementById('modalKeuangan').classList.remove('hidden');
+}
+
+function closeModalKeuangan() { document.getElementById('modalKeuangan').classList.add('hidden'); }
+
+async function simpanKeuangan() {
+  if (!isAdmin()) return;
+
+  const jenis      = document.getElementById('inJenis').value;
+  const keterangan = document.getElementById('inKeterangan').value.trim();
+  const jumlah     = parseInt(document.getElementById('inJumlah').value);
+  const tanggal    = document.getElementById('inTanggal').value;
+
+  if (!keterangan || isNaN(jumlah) || jumlah <= 0 || !tanggal) {
+    alert('Semua field wajib diisi!');
+    return;
+  }
+
+  try {
+    await db.collection('keuangan').add({ jenis, keterangan, jumlah, tanggal });
+    closeModalKeuangan();
+  } catch (err) {
+    alert('Gagal menyimpan: ' + err.message);
+  }
+}
+
+async function hapusKeuangan(docId) {
+  if (!isAdmin()) return;
+  if (!confirm('Hapus catatan keuangan ini?')) return;
+  try {
+    await db.collection('keuangan').doc(docId).delete();
   } catch (err) {
     alert('Gagal hapus: ' + err.message);
   }
