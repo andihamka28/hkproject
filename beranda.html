@@ -36,7 +36,7 @@
   .header .info b { text-transform: uppercase; }
   .header-right { display: flex; gap: 8px; flex-wrap: wrap; }
 
-  /* ===== NAV TABS (KHUSUS ADMIN) ===== */
+  /* ===== NAV TABS ===== */
   .nav-tabs {
     background: #fff;
     border-radius: 12px;
@@ -228,48 +228,56 @@
   }
   .badge-green { background: #28a745; color: #fff; }
 
-  /* ===== KALKULATOR KASIR (di dalam item card admin) ===== */
-  .kalkulator-box {
-    margin-top: 12px;
-    padding: 12px;
-    background: #f8f9fa;
-    border-radius: 8px;
-    border: 1px solid #e0e0e0;
+  /* ===== KALKULATOR (HALAMAN TERPISAH) ===== */
+  .kalkulator-panel {
+    background: #fff;
+    border-radius: 12px;
+    padding: 22px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
   }
-  .kalkulator-box label {
+  .kalkulator-panel label {
     display: block;
-    font-size: 12px;
+    margin: 12px 0 4px;
+    font-size: 13px;
     color: #555;
-    margin-bottom: 4px;
     font-weight: 600;
   }
-  .kalkulator-box input {
+  .kalkulator-panel input,
+  .kalkulator-panel select {
     width: 100%;
-    padding: 8px 10px;
+    padding: 10px;
     border: 1px solid #ccc;
     border-radius: 6px;
     font-size: 14px;
     font-family: inherit;
   }
-  .kalkulator-box .hasil {
-    margin-top: 8px;
-    font-size: 13px;
-    color: #333;
-    line-height: 1.7;
-  }
-  .kalkulator-box .hasil b { color: #007bff; }
-  .kalkulator-box .kembalian {
-    font-weight: bold;
-    font-size: 16px;
-    padding: 8px;
-    border-radius: 6px;
-    text-align: center;
-    margin-top: 8px;
-  }
-  .kembalian.ok { background: #e8f5e9; color: #28a745; border: 1px solid #28a745; }
-  .kembalian.kurang { background: #ffebee; color: #dc3545; border: 1px solid #dc3545; }
+  .kalkulator-panel button { width: 100%; margin-top: 6px; }
 
-  /* ===== HALAMAN KEUANGAN ===== */
+  .kal-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    font-size: 14px;
+    border-bottom: 1px dashed #eee;
+  }
+  .kal-row:last-child { border-bottom: none; }
+  .kal-row b { color: #333; }
+
+  .kembalian {
+    margin-top: 15px;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    background: #f8f9fa;
+    color: #666;
+  }
+  .kembalian.ok { background: #e8f5e9; color: #28a745; border: 2px solid #28a745; }
+  .kembalian.kurang { background: #ffebee; color: #dc3545; border: 2px solid #dc3545; }
+
+  /* ===== KEUANGAN ===== */
   .keuangan-summary {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -394,41 +402,6 @@
     .item-grid { grid-template-columns: 1fr; }
     .nav-tab { padding: 8px 12px; font-size: 13px; }
   }
- /* ===== PANEL KALKULATOR ===== */
-.kalkulator-panel {
-  background: #fff;
-  border-radius: 12px;
-  padding: 22px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-}
-.kalkulator-panel label {
-  display: block;
-  margin: 12px 0 4px;
-  font-size: 13px;
-  color: #555;
-  font-weight: 600;
-}
-.kalkulator-panel input,
-.kalkulator-panel select {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 14px;
-  font-family: inherit;
-}
-.kalkulator-panel button { width: 100%; margin-top: 6px; }
-
-.kal-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 0;
-  font-size: 14px;
-  border-bottom: 1px dashed #eee;
-}
-.kal-row:last-child { border-bottom: none; }
-.kal-row b { color: #333; }
 </style>
 </head>
 <body>
@@ -446,12 +419,12 @@
     </div>
   </div>
 
-  <!-- NAV TABS (hanya muncul untuk admin) -->
+  <!-- NAV TABS (hanya admin) -->
   <div id="navTabs" class="nav-tabs hidden">
-  <button class="nav-tab active" data-tab="produk" onclick="switchTab('produk')">📦 Produk</button>
-  <button class="nav-tab" data-tab="kalkulator" onclick="switchTab('kalkulator')">🧮 Kalkulator</button>
-  <button class="nav-tab" data-tab="keuangan" onclick="switchTab('keuangan')">💰 Keuangan</button>
-</div>
+    <button class="nav-tab active" data-tab="produk" onclick="switchTab('produk')">📦 Produk</button>
+    <button class="nav-tab" data-tab="kalkulator" onclick="switchTab('kalkulator')">🧮 Kalkulator</button>
+    <button class="nav-tab" data-tab="keuangan" onclick="switchTab('keuangan')">💰 Keuangan</button>
+  </div>
 
   <!-- ================= HALAMAN 1: MENU UTAMA ================= -->
   <div id="pageMenu">
@@ -486,49 +459,47 @@
     <div id="itemGrid" class="item-grid"></div>
   </div>
 
- <!-- ================= HALAMAN KALKULATOR (KHUSUS ADMIN) ================= -->
-<div id="pageKalkulator" class="hidden">
-  <div class="toolbar">
-    <h2>🧮 Kalkulator Kasir</h2>
-    <button class="btn-small btn-danger" onclick="resetKalkulator()">🔄 Reset</button>
-  </div>
-
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 18px;">
-
-    <!-- KIRI: Input -->
-    <div class="kalkulator-panel">
-      <h3 style="margin-top:0; color:#007bff;">📝 Input Transaksi</h3>
-
-      <label>Produk</label>
-      <select id="kalProduk" onchange="kalProdukBerubah()">
-        <option value="">-- Pilih Produk --</option>
-        <option value="manual">✏️ Isi Manual (lain-lain)</option>
-      </select>
-
-      <div id="kalManualWrap" class="hidden">
-        <label>Nama Produk Manual</label>
-        <input type="text" id="kalManualNama" placeholder="Contoh: Kaos Polos">
-      </div>
-
-      <label>Harga Satuan (Rp)</label>
-      <input type="number" id="kalHarga" placeholder="Contoh: 150000" min="0" oninput="hitungKalkulator()">
-
-      <label>Jumlah (Qty)</label>
-      <input type="number" id="kalQty" value="1" min="1" oninput="hitungKalkulator()">
-
-      <label>Uang Cash Diterima (Rp)</label>
-      <input type="number" id="kalCash" placeholder="Contoh: 200000" min="0" oninput="hitungKalkulator()">
-
-      <button class="btn-success" style="margin-top:12px;" onclick="catatKeKeuangan()">
-        📝 Catat ke Keuangan
-      </button>
+  <!-- ================= HALAMAN 3: KALKULATOR (ADMIN) ================= -->
+  <div id="pageKalkulator" class="hidden">
+    <div class="toolbar">
+      <h2>🧮 Kalkulator Kasir</h2>
+      <button class="btn-small btn-danger" onclick="resetKalkulator()">🔄 Reset</button>
     </div>
 
-    <!-- KANAN: Hasil -->
-    <div class="kalkulator-panel">
-      <h3 style="margin-top:0; color:#007bff;">💰 Hasil Perhitungan</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 18px;">
 
-      <div id="kalHasil">
+      <!-- KIRI: Input -->
+      <div class="kalkulator-panel">
+        <h3 style="margin-top:0; color:#007bff;">📝 Input Transaksi</h3>
+
+        <label>Produk</label>
+        <select id="kalProduk" onchange="kalProdukBerubah()">
+          <option value="">-- Memuat produk... --</option>
+        </select>
+
+        <div id="kalManualWrap" class="hidden">
+          <label>Nama Produk Manual</label>
+          <input type="text" id="kalManualNama" placeholder="Contoh: Kaos Polos">
+        </div>
+
+        <label>Harga Satuan (Rp)</label>
+        <input type="number" id="kalHarga" placeholder="Contoh: 150000" min="0" oninput="hitungKalkulator()">
+
+        <label>Jumlah (Qty)</label>
+        <input type="number" id="kalQty" value="1" min="1" oninput="hitungKalkulator()">
+
+        <label>Uang Cash Diterima (Rp)</label>
+        <input type="number" id="kalCash" placeholder="Contoh: 200000" min="0" oninput="hitungKalkulator()">
+
+        <button class="btn-success" style="margin-top:12px;" onclick="catatKeKeuangan()">
+          📝 Catat ke Keuangan
+        </button>
+      </div>
+
+      <!-- KANAN: Hasil -->
+      <div class="kalkulator-panel">
+        <h3 style="margin-top:0; color:#007bff;">💰 Hasil Perhitungan</h3>
+
         <div class="kal-row">
           <span>Harga Satuan</span>
           <b id="kalOutHarga">Rp 0</b>
@@ -537,7 +508,7 @@
           <span>Jumlah</span>
           <b id="kalOutQty">1 pcs</b>
         </div>
-        <div class="kal-row" style="border-top:2px solid #007bff; padding-top:10px; margin-top:10px;">
+        <div class="kal-row" style="border-top:2px solid #007bff; padding-top:12px; margin-top:8px;">
           <span><b>Total Belanja</b></span>
           <b id="kalOutTotal" style="color:#007bff; font-size:18px;">Rp 0</b>
         </div>
@@ -545,18 +516,59 @@
           <span>Uang Cash</span>
           <b id="kalOutCash">Rp 0</b>
         </div>
+
+        <div id="kalKembalian" class="kembalian">
+          <small style="color:#888;">Isi form untuk melihat kembalian</small>
+        </div>
+
+        <div style="margin-top:20px; padding:12px; background:#fff3cd; border-radius:8px; font-size:13px; color:#856404;">
+          💡 Setelah menekan <b>Catat ke Keuangan</b>, transaksi otomatis tercatat sebagai <b>pemasukan</b> di menu Keuangan.
+        </div>
       </div>
 
-      <div id="kalKembalian" class="kembalian" style="margin-top:15px;">
-        <small style="color:#888;">Isi form untuk melihat kembalian</small>
-      </div>
+    </div>
+  </div>
 
-      <div style="margin-top:20px; padding:12px; background:#fff3cd; border-radius:8px; font-size:13px; color:#856404;">
-        💡 Setelah menekan <b>Catat ke Keuangan</b>, transaksi akan otomatis tercatat sebagai <b>pemasukan</b> di menu Keuangan.
+  <!-- ================= HALAMAN 4: KEUANGAN (ADMIN) ================= -->
+  <div id="pageKeuangan" class="hidden">
+    <div class="toolbar">
+      <h2>💰 Catatan Keuangan</h2>
+      <button class="btn-small btn-success" onclick="openTambahKeuanganModal()">➕ Tambah Catatan</button>
+    </div>
+
+    <div class="keuangan-summary">
+      <div class="summary-card masuk">
+        <div class="label">💵 Total Pemasukan</div>
+        <div class="value" id="totalMasuk">Rp 0</div>
+      </div>
+      <div class="summary-card keluar">
+        <div class="label">💸 Total Pengeluaran</div>
+        <div class="value" id="totalKeluar">Rp 0</div>
+      </div>
+      <div class="summary-card saldo">
+        <div class="label">💰 Saldo Akhir</div>
+        <div class="value" id="totalSaldo">Rp 0</div>
       </div>
     </div>
 
+    <div class="keuangan-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Tanggal</th>
+            <th>Keterangan</th>
+            <th>Jenis</th>
+            <th style="text-align:right;">Jumlah</th>
+            <th style="text-align:center;">Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="keuanganBody">
+          <tr><td colspan="5" style="text-align:center;color:#999;padding:30px;">Memuat data...</td></tr>
+        </tbody>
+      </table>
+    </div>
   </div>
+
 </div>
 
 <!-- ================= MODAL: TAMBAH/EDIT MENU ================= -->
@@ -609,10 +621,10 @@
     </select>
 
     <label>Keterangan</label>
-    <input type="text" id="inKeterangan" placeholder="Contoh: Penjualan Jersey">
+    <input type="text" id="inKeterangan" placeholder="Contoh: Beli bahan kaos">
 
     <label>Jumlah (Rp)</label>
-    <input type="number" id="inJumlah" placeholder="Contoh: 500000" min="0">
+    <input type="number" id="inJumlah" placeholder="Contoh: 200000" min="0">
 
     <label>Tanggal</label>
     <input type="date" id="inTanggal">
@@ -648,7 +660,7 @@ const db = firebase.firestore();
    KONTAK PEMESANAN
 ============================================================ */
 const KONTAK = {
-  wa: '6287811101710',       // format internasional tanpa +
+  wa: '6287811101710',
   ig: 'hkproject28'
 };
 
@@ -679,13 +691,10 @@ function formatTanggal(iso) {
   const d = new Date(iso);
   return d.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
 }
-function todayISO() {
-  const d = new Date();
-  return d.toISOString().split('T')[0];
-}
+function todayISO() { return new Date().toISOString().split('T')[0]; }
 
 /* ============================================================
-   NAV TAB (Produk / Keuangan)
+   NAV TAB
 ============================================================ */
 function switchTab(tab) {
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
@@ -705,15 +714,16 @@ function switchTab(tab) {
     listenKeuangan();
   }
 }
+
 /* ============================================================
    STATE
 ============================================================ */
 let activeMenuId = null;
 let menusCache = [];
-let allItemsCache = []; // untuk kalkulator
+let allItemsCache = [];
 
 /* ============================================================
-   SEED DATA DEFAULT
+   SEED DEFAULT
 ============================================================ */
 const DEFAULT_MENUS = [
   { nama: 'Jersey', icon: '👕', items: [
@@ -848,6 +858,7 @@ function bukaMenu(menuDocId) {
   else btnTambahItem.classList.add('hidden');
 
   document.getElementById('pageMenu').classList.add('hidden');
+  document.getElementById('pageKalkulator').classList.add('hidden');
   document.getElementById('pageKeuangan').classList.add('hidden');
   document.getElementById('pageDetail').classList.remove('hidden');
 
@@ -898,6 +909,8 @@ function renderItems(items) {
     return;
   }
 
+  const menuNama = (menusCache.find(m => m.docId === activeMenuId) || {}).nama || 'Produk';
+
   items.forEach(p => {
     const card = document.createElement('div');
     card.className = 'item-card' + (p.promo ? ' promo' : '');
@@ -930,21 +943,33 @@ function renderItems(items) {
       `;
     }
 
-    
-       // ===== ADMIN: tombol edit & hapus saja =====
+    // Admin: tombol edit & hapus
     const adminHTML = admin ? `
       <div class="admin-actions">
         <button class="btn-small btn-warning" onclick="openEditItemModal('${p.docId}')">✏️ Edit</button>
         <button class="btn-small btn-danger" onclick="hapusItem('${p.docId}', '${escapeHtml(p.nama)}')">🗑️ Hapus</button>
       </div>
     ` : '';
-    // Tombol pemesanan (tamu)
+
+    // Tamu: tombol pemesanan
     const guestHTML = !admin ? `
       <div class="guest-actions">
-        <button class="btn-wa" onclick="pesanWA('${escapeHtml(p.nama)}', ${p.harga})">
+        <button class="btn-wa" onclick='pesanWA(${JSON.stringify({
+          nama: p.nama,
+          harga: p.harga,
+          promo: !!p.promo,
+          harga3: p.harga3 || 0,
+          menuNama: menuNama
+        })})'>
           💬 Pesan via WhatsApp
         </button>
-        <button class="btn-ig" onclick="pesanIG('${escapeHtml(p.nama)}')">
+        <button class="btn-ig" onclick='pesanIG(${JSON.stringify({
+          nama: p.nama,
+          harga: p.harga,
+          promo: !!p.promo,
+          harga3: p.harga3 || 0,
+          menuNama: menuNama
+        })})'>
           📷 Instagram
         </button>
       </div>
@@ -964,32 +989,64 @@ function renderItems(items) {
 }
 
 /* ============================================================
+   TOMBOL PEMESANAN (TAMU)
+============================================================ */
+function susunPesan(item) {
+  let detail = '';
+  detail += `📦 Menu: ${item.menuNama}\n`;
+  detail += `🛍️ Item: ${item.nama}\n`;
+  detail += `💰 Harga Normal: ${rupiah(item.harga)}\n`;
+
+  if (item.promo && item.harga3 > 0) {
+    const diskon15 = Math.round(item.harga * 0.85);
+    const hemat    = item.harga - diskon15;
+    const perPcs   = Math.round(item.harga3 / 3);
+
+    detail += `\n🎉 PROMO TERSEDIA!\n`;
+    detail += `🔖 Diskon 15%: ${rupiah(diskon15)} (hemat ${rupiah(hemat)})\n`;
+    detail += `📦 Harga Beli 3: ${rupiah(perPcs)}/pcs\n`;
+    detail += `💵 Total Beli 3: ${rupiah(item.harga3)}\n`;
+  }
+
+  return `Halo HKPROJECT! 👋\n\nSaya ingin memesan:\n\n${detail}\n━━━━━━━━━━━━━━━\n\nMohon info ketersediaan dan cara pemesanan. Terima kasih! 🙏`;
+}
+
+function pesanWA(item) {
+  const pesan = susunPesan(item);
+  const url = `https://wa.me/${KONTAK.wa}?text=${encodeURIComponent(pesan)}`;
+  window.open(url, '_blank');
+}
+
+function pesanIG(item) {
+  const pesan = susunPesan(item);
+
+  navigator.clipboard.writeText(pesan)
+    .then(() => {
+      alert('✅ Detail pesanan sudah dicopy!\n\nSilakan klik OK, lalu paste (Ctrl+V / long-press) di DM Instagram @' + KONTAK.ig);
+      window.open(`https://instagram.com/${KONTAK.ig}`, '_blank');
+    })
+    .catch(() => {
+      alert('Detail pesanan:\n\n' + pesan + '\n\nSilakan copy manual lalu kirim di DM Instagram @' + KONTAK.ig);
+      window.open(`https://instagram.com/${KONTAK.ig}`, '_blank');
+    });
+}
+
+/* ============================================================
    KALKULATOR KASIR (HALAMAN TERPISAH)
 ============================================================ */
-
-// Isi dropdown dengan semua item dari semua menu
-let allItemsCache = []; // { nama, menuNama, harga, promo, harga3 }
-
-function isiDropdownKalkulator() {
+async function isiDropdownKalkulator() {
   const dropdown = document.getElementById('kalProduk');
   const currentVal = dropdown.value;
 
-  // Kumpulkan semua item dari semua menu
-  allItemsCache = [];
+  dropdown.innerHTML = '<option value="">-- Memuat produk... --</option>';
 
-  // Ambil dari menusCache (yang sudah ada)
-  menusCache.forEach(m => {
-    // Kita perlu ambil items dari setiap menu
-    // Karena items di-load terpisah, kita pakai cara lain: fetch langsung
-  });
-
-  // Cara paling aman: ambil dari Firestore
-  db.collection('menus').get().then(async (menusSnap) => {
+  try {
     allItemsCache = [];
+    const menusSnap = await db.collection('menus').orderBy('nama').get();
 
     for (const menuDoc of menusSnap.docs) {
       const menuData = menuDoc.data();
-      const itemsSnap = await menuDoc.ref.collection('items').get();
+      const itemsSnap = await menuDoc.ref.collection('items').orderBy('nama').get();
       itemsSnap.forEach(itemDoc => {
         const item = itemDoc.data();
         allItemsCache.push({
@@ -1003,13 +1060,6 @@ function isiDropdownKalkulator() {
       });
     }
 
-    // Urutkan berdasarkan menu lalu nama
-    allItemsCache.sort((a, b) => {
-      if (a.menuNama !== b.menuNama) return a.menuNama.localeCompare(b.menuNama);
-      return a.nama.localeCompare(b.nama);
-    });
-
-    // Build dropdown
     let html = '<option value="">-- Pilih Produk --</option>';
     html += '<option value="manual">✏️ Isi Manual (lain-lain)</option>';
 
@@ -1026,12 +1076,11 @@ function isiDropdownKalkulator() {
 
     dropdown.innerHTML = html;
     if (currentVal) dropdown.value = currentVal;
-
     hitungKalkulator();
-  }).catch(err => {
+  } catch (err) {
     console.error('Gagal load produk:', err);
-    dropdown.innerHTML = '<option value="">-- Gagal memuat produk --</option><option value="manual">✏️ Isi Manual</option>';
-  });
+    dropdown.innerHTML = '<option value="">-- Gagal memuat --</option><option value="manual">✏️ Isi Manual</option>';
+  }
 }
 
 function kalProdukBerubah() {
@@ -1100,7 +1149,6 @@ async function catatKeKeuangan() {
   const qty = parseInt(document.getElementById('kalQty').value) || 1;
   const cash = parseInt(document.getElementById('kalCash').value) || 0;
 
-  // Validasi
   let namaProduk = '';
   if (val === 'manual') {
     namaProduk = document.getElementById('kalManualNama').value.trim();
@@ -1123,14 +1171,13 @@ async function catatKeKeuangan() {
   }
 
   const keterangan = `${namaProduk} × ${qty}`;
-  const tanggal = todayISO();
 
   try {
     await db.collection('keuangan').add({
       jenis: 'masuk',
       keterangan: keterangan,
       jumlah: total,
-      tanggal: tanggal,
+      tanggal: todayISO(),
       sumber: 'kalkulator',
       qty: qty,
       hargaSatuan: harga,
@@ -1138,25 +1185,11 @@ async function catatKeKeuangan() {
       kembalian: kembali > 0 ? kembali : 0
     });
 
-    alert(`✅ Transaksi tercatat!\n\n${keterangan}\nTotal: ${rupiah(total)}\n${cash > 0 ? 'Kembalian: ' + rupiah(kembali) : ''}\n\nCek di menu 💰 Keuangan.`);
+    alert(`✅ Transaksi tercatat!\n\n${keterangan}\nTotal: ${rupiah(total)}${cash > 0 ? '\nKembalian: ' + rupiah(kembali) : ''}\n\nCek di menu 💰 Keuangan.`);
     resetKalkulator();
   } catch (err) {
     alert('Gagal mencatat: ' + err.message);
   }
-}
-
-/* ============================================================
-   TOMBOL PEMESANAN (TAMU)
-============================================================ */
-function pesanWA(namaItem, harga) {
-  const pesan = `Halo HKPROJECT! 👋\n\nSaya ingin memesan:\n📦 *${namaItem}*\n💰 Harga: ${rupiah(harga)}\n\nMohon info ketersediaan dan cara pemesanan. Terima kasih!`;
-  const url = `https://wa.me/${KONTAK.wa}?text=${encodeURIComponent(pesan)}`;
-  window.open(url, '_blank');
-}
-
-function pesanIG(namaItem) {
-  const url = `https://instagram.com/${KONTAK.ig}`;
-  window.open(url, '_blank');
 }
 
 /* ============================================================
