@@ -3,153 +3,1936 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login - HKPROJECT</title>
+<title>Beranda - HKPROJECT</title>
 <style>
   * { box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
   body {
     background: #f0f2f5;
+    margin: 0;
+    min-height: 100vh;
+    padding: 20px;
     display: flex;
     justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
-    padding: 20px;
+    align-items: flex-start;
   }
-  .box {
-    background: #fff;
-    padding: 30px;
+  .container { width: 100%; max-width: 1100px; }
+
+  /* ===== HEADER ===== */
+  .header {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: #fff;
+    padding: 20px 25px;
     border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    width: 100%;
-    max-width: 380px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0,123,255,0.3);
+  }
+  .header h1 { margin: 0; letter-spacing: 3px; font-size: 26px; }
+  .header .info { font-size: 14px; opacity: 0.95; margin-top: 4px; }
+  .header .info b { text-transform: uppercase; }
+  .header-right { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+  /* ===== TOMBOL KERANJANG DI HEADER ===== */
+  .btn-cart-header {
+    background: #fff;
+    color: #007bff;
+    border: 2px solid #fff;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    transition: 0.2s;
+    width: auto;
+    margin: 0;
+  }
+  .btn-cart-header:hover { background: #f0f2f5; color: #0056b3; }
+  .btn-cart-header .cart-badge {
+    background: #dc3545;
+    color: #fff;
+    border-radius: 10px;
+    padding: 1px 7px;
+    font-size: 11px;
+    font-weight: bold;
+    min-width: 20px;
     text-align: center;
   }
-  .box h1 { color: #007bff; margin: 0 0 10px 0; letter-spacing: 2px; font-size: 28px; }
-  .box h2 { color: #333; font-size: 18px; margin: 0 0 20px 0; font-weight: normal; }
-  input {
-    width: 100%;
-    padding: 12px;
-    margin: 8px 0;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 14px;
-    font-family: inherit;
+  .btn-cart-header .cart-badge.hidden { display: none; }
+
+  /* ===== NAV TABS ===== */
+  .nav-tabs {
+    background: #fff;
+    border-radius: 12px;
+    padding: 6px;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 6px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    flex-wrap: wrap;
   }
-  input:focus { outline: none; border-color: #007bff; }
+  .nav-tab {
+    padding: 10px 18px;
+    border-radius: 8px;
+    background: transparent;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.2s;
+    width: auto;
+    margin: 0;
+  }
+  .nav-tab:hover { background: #f0f2f5; color: #007bff; }
+  .nav-tab.active { background: #007bff; color: #fff; }
+
   button {
-    padding: 12px 15px;
-    margin: 5px 0;
+    padding: 10px 15px;
+    margin: 0;
     background: #007bff;
     color: #fff;
     border: none;
     border-radius: 6px;
     cursor: pointer;
     font-size: 14px;
-    width: 100%;
     font-family: inherit;
-    font-weight: 600;
     transition: 0.2s;
   }
   button:hover { background: #0056b3; }
-  .btn-guest { background: #28a745; }
-  .btn-guest:hover { background: #1e7e34; }
+  button:disabled { background: #ccc; cursor: not-allowed; }
+  .btn-small { padding: 6px 12px; font-size: 13px; }
+  .btn-danger { background: #dc3545; }
+  .btn-danger:hover { background: #a71d2a; }
+  .btn-success { background: #28a745; }
+  .btn-success:hover { background: #1e7e34; }
+  .btn-warning { background: #ffc107; color: #333; }
+  .btn-warning:hover { background: #d39e00; }
+  .btn-back { background: #6c757d; }
+  .btn-back:hover { background: #495057; }
+  .btn-wa { background: #25d366; }
+  .btn-wa:hover { background: #128c7e; }
+  .btn-ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+  .btn-ig:hover { filter: brightness(0.9); }
 
-  .error {
-    color: #dc3545;
-    font-size: 13px;
-    min-height: 18px;
-    margin: 5px 0;
-    text-align: center;
+  /* ===== TOOLBAR ===== */
+  .toolbar {
+    background: #fff;
+    padding: 15px 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
   }
-  .divider {
+  .toolbar h2 { margin: 0; color: #333; font-size: 18px; }
+
+  /* ===== GRID MENU ===== */
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 18px;
+  }
+  .menu-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    padding: 25px 20px;
+    text-align: center;
+    cursor: pointer;
+    border-top: 5px solid #007bff;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+  }
+  .menu-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 22px rgba(0,123,255,0.25);
+  }
+  .menu-card .icon { font-size: 42px; margin-bottom: 12px; display: block; }
+  .menu-card .title { font-size: 17px; font-weight: bold; color: #333; margin-bottom: 6px; word-break: break-word; }
+  .menu-card .sub { font-size: 12px; color: #888; }
+  .menu-card .menu-actions { margin-top: 14px; display: flex; gap: 6px; justify-content: center; }
+
+  /* ===== HALAMAN DETAIL ===== */
+  .detail-header {
+    background: #fff;
+    padding: 18px 22px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+    border-left: 5px solid #007bff;
+  }
+  .detail-header h2 { margin: 0; color: #007bff; font-size: 22px; display: flex; align-items: center; gap: 10px; }
+  .detail-header .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  .item-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 18px;
+  }
+  .item-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    padding: 20px;
+    border-left: 5px solid #007bff;
+  }
+  .item-card.promo { border-left-color: #28a745; }
+  .item-card h3 {
+    margin: 0 0 12px 0;
+    color: #007bff;
+    font-size: 17px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+  .item-card.promo h3 { color: #28a745; }
+
+  .item-card .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    font-size: 14px;
+    border-bottom: 1px dashed #f0f0f0;
+    gap: 10px;
+  }
+  .item-card .row:last-of-type { border-bottom: none; }
+  .item-card .row.highlight {
+    background: #e8f5e9;
+    margin: 6px -8px;
+    padding: 8px;
+    border-radius: 6px;
+    border-bottom: none;
+  }
+  .item-card .label { color: #666; }
+  .item-card .value { color: #333; font-weight: 600; white-space: nowrap; }
+  .item-card .value.diskon { color: #dc3545; }
+  .item-card .value.total { color: #28a745; font-size: 16px; }
+
+  .item-card .admin-actions {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid #eee;
+    display: flex;
+    gap: 6px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+
+  .badge {
+    display: inline-block;
+    background: #ffc107;
+    color: #333;
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 10px;
+    font-weight: bold;
+    margin-left: 4px;
+    vertical-align: middle;
+  }
+  .badge-green { background: #28a745; color: #fff; }
+
+  /* ===== QTY BOX (TAMU) ===== */
+  .qty-box {
+    margin-top: 14px;
+    padding: 12px;
+    background: #f8f9fa;
+    border-radius: 8px;
     display: flex;
     align-items: center;
-    margin: 18px 0;
+    justify-content: space-between;
+    gap: 10px;
+    border: 1px solid #e0e0e0;
+  }
+  .qty-box .qty-label { font-size: 13px; color: #555; font-weight: 600; }
+  .qty-control { display: flex; align-items: center; gap: 6px; }
+  .qty-control button {
+    width: 34px; height: 34px; border-radius: 50%; padding: 0;
+    font-size: 18px; font-weight: bold;
+    background: #007bff; color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0;
+  }
+  .qty-control button:hover { background: #0056b3; }
+  .qty-control input {
+    width: 55px; text-align: center; padding: 8px 4px;
+    border: 1.5px solid #ccc; border-radius: 8px;
+    font-size: 15px; font-weight: bold; font-family: inherit;
+    background: #fff;
+  }
+  .qty-preview {
+    margin-top: 10px; padding: 10px 12px;
+    background: #e8f5e9; border-radius: 8px;
+    border: 1px solid #a5d6a7;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 13px; gap: 8px;
+  }
+  .qty-preview .lbl { color: #555; }
+  .qty-preview .val { color: #28a745; font-weight: bold; font-size: 15px; white-space: nowrap; }
+
+  .btn-add-cart {
+    width: 100%; margin-top: 10px; padding: 12px;
+    font-size: 14px; font-weight: 700;
+    background: linear-gradient(135deg, #28a745, #1e7e34);
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(40,167,69,0.25);
+  }
+  .btn-add-cart:hover { background: linear-gradient(135deg, #1e7e34, #155724); }
+
+  /* ===== MODAL KERANJANG ===== */
+  .cart-list {
+    max-height: 380px; overflow-y: auto; margin: 15px 0;
+    border: 1px solid #eee; border-radius: 10px;
+  }
+  .cart-row {
+    padding: 14px 16px;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .cart-row:last-child { border-bottom: none; }
+  .cart-row .cart-info { flex: 1; min-width: 0; }
+  .cart-row .cart-nama { font-weight: bold; color: #333; margin-bottom: 4px; font-size: 14px; word-break: break-word; }
+  .cart-row .cart-detail { color: #888; font-size: 12px; }
+  .cart-row .cart-subtotal { color: #28a745; font-weight: 700; white-space: nowrap; font-size: 14px; text-align: right; }
+  .cart-row .cart-qty-mini {
+    display: flex; align-items: center; gap: 4px;
+    background: #f0f2f5; border-radius: 20px; padding: 3px;
+  }
+  .cart-row .cart-qty-mini button {
+    width: 26px; height: 26px; border-radius: 50%;
+    padding: 0; font-size: 14px; font-weight: bold;
+    background: #fff; color: #007bff; margin: 0;
+    border: 1px solid #ddd;
+  }
+  .cart-row .cart-qty-mini button:hover { background: #007bff; color: #fff; }
+  .cart-row .cart-qty-mini span {
+    min-width: 26px; text-align: center;
+    font-weight: bold; font-size: 13px; color: #333;
+  }
+  .cart-row .cart-hapus {
+    width: 30px; height: 30px; border-radius: 50%;
+    padding: 0; font-size: 16px;
+    background: #ffe5e5; color: #dc3545;
+    border: 1px solid #f5c2c2; margin: 0;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .cart-row .cart-hapus:hover { background: #dc3545; color: #fff; }
+
+  .cart-total-box {
+    padding: 16px;
+    background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+    border-radius: 10px; margin-bottom: 12px;
+    border: 2px solid #28a745;
+  }
+  .cart-total-box .ct-label {
+    font-size: 12px; color: #1e7e34; text-transform: uppercase;
+    letter-spacing: 1px; font-weight: 700; margin-bottom: 4px;
+  }
+  .cart-total-box .ct-value { font-size: 26px; font-weight: 800; color: #28a745; }
+
+  .cart-empty { text-align: center; padding: 40px 20px; color: #999; }
+  .cart-empty .icon-big { font-size: 56px; margin-bottom: 10px; opacity: 0.4; }
+
+  /* ===== KALKULATOR ===== */
+  .kalkulator-wrap {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 18px;
+  }
+  @media (max-width: 800px) {
+    .kalkulator-wrap { grid-template-columns: 1fr; }
+  }
+  .kalkulator-panel {
+    background: #fff; border-radius: 14px; padding: 24px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+  }
+  .kalkulator-panel h3 {
+    margin: 0 0 18px 0; padding-bottom: 12px;
+    border-bottom: 2px solid #f0f2f5;
+    font-size: 16px; color: #007bff;
+  }
+  .kalkulator-panel label {
+    display: block; margin: 14px 0 6px;
+    font-size: 13px; color: #555; font-weight: 600;
+  }
+  .kalkulator-panel input,
+  .kalkulator-panel select {
+    width: 100%; padding: 12px 14px;
+    border: 1.5px solid #e0e0e0; border-radius: 8px;
+    font-size: 15px; font-family: inherit;
+    transition: border-color 0.2s;
+    background: #fafbfc;
+  }
+  .kalkulator-panel input:focus,
+  .kalkulator-panel select:focus {
+    outline: none; border-color: #007bff; background: #fff;
+  }
+  .kalkulator-panel input.uang {
+    font-size: 16px; font-weight: 600; letter-spacing: 0.5px;
+  }
+  .quick-nominal {
+    display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px;
+  }
+  .quick-nominal button {
+    flex: 1; min-width: 70px; padding: 8px 10px;
+    background: #e7f1ff; color: #007bff;
+    border: 1px solid #b8daff; border-radius: 6px;
+    font-size: 12px; font-weight: 600; margin: 0;
+    cursor: pointer; transition: 0.15s;
+  }
+  .quick-nominal button:hover { background: #007bff; color: #fff; }
+
+  .btn-catat {
+    width: 100%; padding: 14px;
+    font-size: 15px; font-weight: 700;
+    background: linear-gradient(135deg, #28a745, #1e7e34);
+    border-radius: 10px; margin-top: 20px;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 12px rgba(40,167,69,0.3);
+  }
+  .btn-catat:hover { background: linear-gradient(135deg, #1e7e34, #155724); }
+
+  .hasil-panel {
+    background: linear-gradient(135deg, #f8f9fa, #eef1f5);
+    display: flex; flex-direction: column;
+  }
+  .hasil-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 0; font-size: 14px;
+    border-bottom: 1px dashed #d0d5dd;
+  }
+  .hasil-row:last-of-type { border-bottom: none; }
+  .hasil-row .label { color: #666; font-weight: 500; }
+  .hasil-row .value { color: #333; font-weight: 700; font-size: 15px; }
+
+  .hasil-row.total {
+    background: #fff; margin: 8px -12px; padding: 14px 12px;
+    border-radius: 8px; border: 2px solid #007bff;
+    border-bottom: 2px solid #007bff;
+  }
+  .hasil-row.total .value {
+    color: #007bff; font-size: 20px; font-weight: 800;
+  }
+  .kembalian-big {
+    padding: 20px; border-radius: 12px;
+    text-align: center; background: #fff;
+    border: 2px dashed #ccc; margin-top: 20px;
+  }
+  .kembalian-big .kembali-label {
+    font-size: 13px; color: #666; margin-bottom: 8px;
+    text-transform: uppercase; letter-spacing: 1px; font-weight: 600;
+  }
+  .kembalian-big .kembali-value {
+    font-size: 28px; font-weight: 800; color: #999;
+  }
+  .kembalian-big.ok {
+    background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+    border: 2px solid #28a745;
+  }
+  .kembalian-big.ok .kembali-label { color: #1e7e34; }
+  .kembalian-big.ok .kembali-value { color: #28a745; }
+  .kembalian-big.kurang {
+    background: linear-gradient(135deg, #ffebee, #ffcdd2);
+    border: 2px solid #dc3545;
+  }
+  .kembalian-big.kurang .kembali-label { color: #a71d2a; }
+  .kembalian-big.kurang .kembali-value { color: #dc3545; }
+
+  /* ===== KEUANGAN ===== */
+  .keuangan-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px; margin-bottom: 20px;
+  }
+  .summary-card {
+    background: #fff; border-radius: 12px; padding: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    border-left: 5px solid #007bff;
+  }
+  .summary-card.masuk { border-left-color: #28a745; }
+  .summary-card.keluar { border-left-color: #dc3545; }
+  .summary-card.saldo { border-left-color: #ffc107; background: #fffef5; }
+  .summary-card .label { font-size: 13px; color: #666; margin-bottom: 6px; }
+  .summary-card .value { font-size: 22px; font-weight: bold; color: #333; }
+  .summary-card.masuk .value { color: #28a745; }
+  .summary-card.keluar .value { color: #dc3545; }
+  .summary-card.saldo .value { color: #d39e00; }
+
+  .keuangan-table {
+    background: #fff; border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    overflow: hidden;
+  }
+  .keuangan-table table { width: 100%; border-collapse: collapse; }
+  .keuangan-table th {
+    background: #f8f9fa; padding: 12px;
+    text-align: left; font-size: 13px; color: #555;
+    border-bottom: 2px solid #eee;
+  }
+  .keuangan-table td {
+    padding: 12px; border-bottom: 1px solid #f0f0f0;
+    font-size: 14px;
+  }
+  .keuangan-table tr:last-child td { border-bottom: none; }
+  .keuangan-table .td-masuk { color: #28a745; font-weight: 600; }
+  .keuangan-table .td-keluar { color: #dc3545; font-weight: 600; }
+
+  /* ===== MODAL ===== */
+  .modal {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 100; padding: 20px;
+  }
+  .modal-content {
+    background: #fff; padding: 25px; border-radius: 12px;
+    width: 100%; max-width: 460px;
+    max-height: 90vh; overflow-y: auto;
+  }
+  .modal-content h3 { margin-top: 0; color: #007bff; }
+  .modal-content label {
+    display: block; margin: 10px 0 4px;
+    font-size: 13px; color: #555; font-weight: 600;
+  }
+  .modal-content small { color: #888; font-weight: normal; }
+  .modal-content input, .modal-content select, .modal-content textarea {
+    width: 100%; padding: 10px; margin: 8px 0;
+    border: 1px solid #ccc; border-radius: 6px;
+    font-size: 14px; font-family: inherit;
+  }
+  .modal-actions { display: flex; gap: 8px; margin-top: 20px; }
+  .modal-actions button { width: 100%; }
+
+  .checkbox-wrap {
+    display: flex; align-items: center; gap: 8px;
+    margin: 12px 0 4px; padding: 10px;
+    background: #f8f9fa; border-radius: 6px;
+    cursor: pointer;
+  }
+  .checkbox-wrap input[type="checkbox"] {
+    width: auto; margin: 0; cursor: pointer; transform: scale(1.2);
+  }
+
+  .hidden { display: none !important; }
+
+  .empty, .loading-box {
+    text-align: center; color: #999; padding: 40px;
+    background: #fff; border-radius: 12px;
+    grid-column: 1 / -1;
+  }
+  .loading-box .spinner {
+    display: inline-block; width: 30px; height: 30px;
+    border: 3px solid #007bff; border-top-color: transparent;
+    border-radius: 50%; animation: spin 0.8s linear infinite;
+    margin-bottom: 10px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ===== FOOTER HUBUNGI KAMI ===== */
+  .footer {
+    margin-top: 30px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 22px 25px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    border-top: 4px solid #007bff;
+  }
+  .footer-title {
+    font-size: 16px;
+    color: #333;
+    margin: 0 0 14px 0;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .footer-sub {
+    font-size: 12px;
     color: #888;
-    font-size: 13px;
+    font-weight: normal;
+    margin-left: 4px;
   }
-  .divider::before, .divider::after {
-    content: '';
+  .footer-contacts {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .contact-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 18px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    transition: 0.2s;
     flex: 1;
-    height: 1px;
-    background: #ddd;
+    min-width: 200px;
+    justify-content: center;
   }
-  .divider span { padding: 0 10px; }
+  .contact-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+  .contact-btn .ic { font-size: 20px; }
+  .contact-wa { background: #25d366; }
+  .contact-wa:hover { background: #128c7e; }
+  .contact-ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+  .contact-ig:hover { filter: brightness(0.9); }
+  .footer-copy {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid #f0f0f0;
+    text-align: center;
+    font-size: 12px;
+    color: #999;
+  }
+
+  /* Toast */
+  @keyframes toastIn { from { opacity: 0; transform: translate(-50%, 20px); } to { opacity: 1; transform: translate(-50%, 0); } }
+
+  @media (max-width: 500px) {
+    .header h1 { font-size: 20px; letter-spacing: 2px; }
+    .menu-grid { grid-template-columns: repeat(2, 1fr); }
+    .item-grid { grid-template-columns: 1fr; }
+    .nav-tab { padding: 8px 12px; font-size: 13px; }
+    .contact-btn { min-width: 100%; }
+  }
 </style>
 </head>
 <body>
 
-<div class="box">
-  <h1>HKPROJECT</h1>
-  <h2>Login</h2>
-  <p id="error" class="error"></p>
+<div class="container">
 
-  <form id="adminForm">
-    <input type="text" id="username" placeholder="Username" required autocomplete="username">
-    <input type="password" id="password" placeholder="Password" required autocomplete="current-password">
-    <button type="submit">Login sebagai Admin</button>
-  </form>
+  <!-- HEADER -->
+  <div class="header">
+    <div>
+      <h1>HKPROJECT</h1>
+      <div class="info">Login sebagai: <b id="userName"></b> (<span id="userRole"></span>)</div>
+    </div>
+    <div class="header-right">
+      <button id="btnCartHeader" class="btn-cart-header hidden" onclick="openCart()">
+        🛒 Keranjang
+        <span class="cart-badge hidden" id="cartBadgeHeader">0</span>
+      </button>
+      <button class="btn-small btn-danger" onclick="logout()">Logout</button>
+    </div>
+  </div>
 
-  <div class="divider"><span>atau</span></div>
-  <button id="guestBtn" class="btn-guest">👤 Masuk sebagai Tamu</button>
+  <!-- NAV TABS (hanya admin) -->
+  <div id="navTabs" class="nav-tabs hidden">
+    <button class="nav-tab active" data-tab="produk" onclick="switchTab('produk')">📦 Produk</button>
+    <button class="nav-tab" data-tab="kalkulator" onclick="switchTab('kalkulator')">🧮 Kalkulator</button>
+    <button class="nav-tab" data-tab="keuangan" onclick="switchTab('keuangan')">💰 Keuangan</button>
+  </div>
+
+  <!-- ================= HALAMAN 1: MENU UTAMA ================= -->
+  <div id="pageMenu">
+    <div class="toolbar">
+      <h2>📂 Kategori Menu</h2>
+      <button id="btnTambahMenu" class="btn-small btn-success hidden" onclick="openTambahMenuModal()">
+        ➕ Tambah Menu
+      </button>
+    </div>
+    <div id="menuGrid" class="menu-grid">
+      <div class="loading-box">
+        <div class="spinner"></div>
+        <div>Memuat menu...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= HALAMAN 2: DETAIL MENU ================= -->
+  <div id="pageDetail" class="hidden">
+    <div class="detail-header">
+      <h2>
+        <span id="detailIcon">📦</span>
+        <span id="detailTitle">Nama Menu</span>
+      </h2>
+      <div class="actions">
+        <button class="btn-small btn-success hidden" id="btnTambahItem" onclick="openTambahItemModal()">
+          ➕ Tambah Item
+        </button>
+        <button class="btn-small btn-back" onclick="kembaliKeMenu()">← Kembali</button>
+      </div>
+    </div>
+    <div id="itemGrid" class="item-grid"></div>
+  </div>
+
+  <!-- ================= HALAMAN 3: KALKULATOR (ADMIN) ================= -->
+  <div id="pageKalkulator" class="hidden">
+    <div class="toolbar">
+      <h2>🧮 Kalkulator Kasir</h2>
+      <button class="btn-small btn-danger" onclick="resetKalkulator()">🔄 Reset</button>
+    </div>
+
+    <div class="kalkulator-wrap">
+      <div class="kalkulator-panel">
+        <h3>📝 Input Transaksi</h3>
+
+        <label>Produk</label>
+        <select id="kalProduk" onchange="kalProdukBerubah()">
+          <option value="">-- Memuat produk... --</option>
+        </select>
+
+        <div id="kalManualWrap" class="hidden">
+          <label>Nama Produk Manual</label>
+          <input type="text" id="kalManualNama" placeholder="Contoh: Kaos Polos">
+        </div>
+
+        <label>Harga Satuan</label>
+        <input type="text" id="kalHarga" class="uang" placeholder="0" inputmode="numeric" oninput="formatInputUang(this); hitungKalkulator()">
+
+        <label>Jumlah (Qty)</label>
+        <input type="number" id="kalQty" value="1" min="1" oninput="hitungKalkulator()">
+
+        <label>Uang Cash Diterima</label>
+        <input type="text" id="kalCash" class="uang" placeholder="0" inputmode="numeric" oninput="formatInputUang(this); hitungKalkulator()">
+
+        <div class="quick-nominal">
+          <button type="button" onclick="setCash(10000)">10rb</button>
+          <button type="button" onclick="setCash(20000)">20rb</button>
+          <button type="button" onclick="setCash(50000)">50rb</button>
+          <button type="button" onclick="setCash(100000)">100rb</button>
+          <button type="button" onclick="setCash(150000)">150rb</button>
+          <button type="button" onclick="setCash(200000)">200rb</button>
+        </div>
+
+        <button class="btn-catat" onclick="catatKeKeuangan()">
+          📝 Catat ke Keuangan
+        </button>
+      </div>
+
+      <div class="kalkulator-panel hasil-panel">
+        <h3>💰 Hasil Perhitungan</h3>
+
+        <div class="hasil-row">
+          <span class="label">Harga Satuan</span>
+          <span class="value" id="kalOutHarga">Rp 0</span>
+        </div>
+        <div class="hasil-row">
+          <span class="label">Jumlah</span>
+          <span class="value" id="kalOutQty">1 pcs</span>
+        </div>
+
+        <div class="hasil-row total">
+          <span class="label"><b>Total Belanja</b></span>
+          <span class="value" id="kalOutTotal">Rp 0</span>
+        </div>
+
+        <div class="hasil-row">
+          <span class="label">Uang Cash</span>
+          <span class="value" id="kalOutCash">Rp 0</span>
+        </div>
+
+        <div class="kembalian-big" id="kalKembalian">
+          <div class="kembali-label">Kembalian</div>
+          <div class="kembali-value" id="kalKembaliValue">Rp 0</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= HALAMAN 4: KEUANGAN (ADMIN) ================= -->
+  <div id="pageKeuangan" class="hidden">
+    <div class="toolbar">
+      <h2>💰 Catatan Keuangan</h2>
+      <button class="btn-small btn-success" onclick="openTambahKeuanganModal()">➕ Tambah Catatan</button>
+    </div>
+
+    <div class="keuangan-summary">
+      <div class="summary-card masuk">
+        <div class="label">💵 Total Pemasukan</div>
+        <div class="value" id="totalMasuk">Rp 0</div>
+      </div>
+      <div class="summary-card keluar">
+        <div class="label">💸 Total Pengeluaran</div>
+        <div class="value" id="totalKeluar">Rp 0</div>
+      </div>
+      <div class="summary-card saldo">
+        <div class="label">💰 Saldo Akhir</div>
+        <div class="value" id="totalSaldo">Rp 0</div>
+      </div>
+    </div>
+
+    <div class="keuangan-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Tanggal</th>
+            <th>Keterangan</th>
+            <th>Jenis</th>
+            <th style="text-align:right;">Jumlah</th>
+            <th style="text-align:center;">Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="keuanganBody">
+          <tr><td colspan="5" style="text-align:center;color:#999;padding:30px;">Memuat data...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ================= FOOTER HUBUNGI KAMI ================= -->
+  <div class="footer">
+    <h3 class="footer-title">
+      📞 Hubungi Kami
+      <span class="footer-sub">— pesan, tanya, atau custom order langsung</span>
+    </h3>
+
+    <div class="footer-contacts">
+      <a class="contact-btn contact-wa"
+         href="https://wa.me/6287811101710?text=Halo%20HKPROJECT!%20Saya%20ingin%20bertanya."
+         target="_blank" rel="noopener">
+        <span class="ic">💬</span>
+        <span>WhatsApp — 0878-1110-1710</span>
+      </a>
+
+      <a class="contact-btn contact-ig"
+         href="https://instagram.com/hkproject28"
+         target="_blank" rel="noopener">
+        <span class="ic">📷</span>
+        <span>Instagram — @hkproject28</span>
+      </a>
+    </div>
+
+    <div class="footer-copy">
+      © <span id="tahunFooter"></span> HKPROJECT — Semua hak dilindungi
+    </div>
+  </div>
+
 </div>
+
+<!-- ================= MODAL: TAMBAH/EDIT MENU ================= -->
+<div id="modalMenu" class="modal hidden">
+  <div class="modal-content">
+    <h3 id="modalMenuTitle">➕ Tambah Menu</h3>
+    <label>Nama Menu</label>
+    <input type="text" id="menuNama" placeholder="Contoh: Jersey">
+    <label>Icon (Emoji)</label>
+    <input type="text" id="menuIcon" placeholder="Contoh: 👕" maxlength="4" value="📦">
+    <div class="modal-actions">
+      <button class="btn-danger" onclick="closeModalMenu()">Batal</button>
+      <button class="btn-success" onclick="simpanMenu()">Simpan</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MODAL: TAMBAH/EDIT ITEM ================= -->
+<div id="modalItem" class="modal hidden">
+  <div class="modal-content">
+    <h3 id="modalItemTitle">➕ Tambah Item</h3>
+    <label>Nama Item</label>
+    <input type="text" id="inNama" placeholder="Contoh: Jersey Printing">
+    <label>Harga Normal (Rp)</label>
+    <input type="number" id="inHarga" placeholder="Contoh: 150000" min="0">
+    <label class="checkbox-wrap">
+      <input type="checkbox" id="inPromo">
+      <span>Aktifkan <b>Diskon 15%</b> & <b>Harga Beli 3</b></span>
+    </label>
+    <div id="promoFields" class="hidden">
+      <label>Harga Beli 3 (Rp) <small>— total untuk 3 pcs</small></label>
+      <input type="number" id="inHarga3" placeholder="Contoh: 400000" min="0">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-danger" onclick="closeModalItem()">Batal</button>
+      <button class="btn-success" id="btnSimpanItem" onclick="simpanItem()">Simpan</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MODAL: TAMBAH KEUANGAN ================= -->
+<div id="modalKeuangan" class="modal hidden">
+  <div class="modal-content">
+    <h3>➕ Tambah Catatan Keuangan</h3>
+
+    <label>Jenis</label>
+    <select id="inJenis">
+      <option value="masuk">💵 Pemasukan</option>
+      <option value="keluar">💸 Pengeluaran</option>
+    </select>
+
+    <label>Keterangan</label>
+    <input type="text" id="inKeterangan" placeholder="Contoh: Beli bahan kaos">
+
+    <label>Jumlah (Rp)</label>
+    <input type="number" id="inJumlah" placeholder="Contoh: 200000" min="0">
+
+    <label>Tanggal</label>
+    <input type="date" id="inTanggal">
+
+    <div class="modal-actions">
+      <button class="btn-danger" onclick="closeModalKeuangan()">Batal</button>
+      <button class="btn-success" onclick="simpanKeuangan()">Simpan</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MODAL: KERANJANG (TAMU) ================= -->
+<div id="modalCart" class="modal hidden">
+  <div class="modal-content" style="max-width: 520px;">
+    <h3>🛒 Keranjang Pesanan</h3>
+
+    <div id="cartList" class="cart-list"></div>
+
+    <div id="cartTotalBox" class="cart-total-box">
+      <div class="ct-label">Total Belanja</div>
+      <div class="ct-value" id="cartTotalValue">Rp 0</div>
+    </div>
+
+    <div class="modal-actions" style="flex-wrap: wrap;">
+      <button class="btn-danger" onclick="closeCart()">Tutup</button>
+      <button class="btn-danger" onclick="kosongkanCart()">🗑️ Kosongkan</button>
+      <button class="btn-wa" style="flex: 1 0 100%;" onclick="checkoutWA()">💬 Pesan via WhatsApp</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== FIREBASE SDK ====== -->
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
 
 <script>
 /* ============================================================
-   KONFIGURASI ADMIN (HARDCODED)
+   KONFIGURASI FIREBASE
 ============================================================ */
-const ADMIN = {
-  username: 'andihamka',
-  password: '2003'
+const firebaseConfig = {
+  apiKey: "AIzaSyDLITYbq1K9PyqCeQNbRgnBOWjrKxVvn_k",
+  authDomain: "hkproject-90d37.firebaseapp.com",
+  projectId: "hkproject-90d37",
+  storageBucket: "hkproject-90d37.firebasestorage.app",
+  messagingSenderId: "94510700157",
+  appId: "1:94510700157:web:d06cbc47c5796e6df38314"
+};
+
+if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+const KONTAK = {
+  wa: '6287811101710',
+  ig: 'hkproject28'
 };
 
 /* ============================================================
-   CEK SESI — kalau sudah login, langsung ke beranda
+   GUARD
 ============================================================ */
-(function cekSesi() {
-  const user = sessionStorage.getItem('user');
-  if (user) {
-    window.location.href = 'beranda.html';
+const currentUser = JSON.parse(sessionStorage.getItem('user') || 'null');
+if (!currentUser) {
+  alert('Silakan login dulu!');
+  window.location.href = 'index.html';
+}
+function isAdmin() { return currentUser && currentUser.role === 'admin'; }
+
+document.getElementById('userName').textContent = currentUser.username;
+document.getElementById('userRole').textContent = currentUser.role.toUpperCase();
+document.getElementById('tahunFooter').textContent = new Date().getFullYear();
+
+if (isAdmin()) {
+  document.getElementById('btnTambahMenu').classList.remove('hidden');
+  document.getElementById('navTabs').classList.remove('hidden');
+} else {
+  document.getElementById('btnCartHeader').classList.remove('hidden');
+}
+
+/* ============================================================
+   HELPERS
+============================================================ */
+function rupiah(n) { return 'Rp ' + Number(n || 0).toLocaleString('id-ID'); }
+function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function formatTanggal(iso) {
+  if (!iso) return '-';
+  const d = new Date(iso);
+  return d.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+}
+function todayISO() { return new Date().toISOString().split('T')[0]; }
+
+/* ============================================================
+   FORMAT UANG OTOMATIS
+============================================================ */
+function formatAngka(n) {
+  if (n === '' || n === null || isNaN(n)) return '';
+  return Number(n).toLocaleString('id-ID');
+}
+function parseAngka(str) {
+  if (!str) return 0;
+  const clean = String(str).replace(/\D/g, '');
+  return clean ? parseInt(clean) : 0;
+}
+function formatInputUang(input) {
+  const digits = input.value.replace(/\D/g, '');
+  if (digits === '') { input.value = ''; return; }
+  const limited = digits.slice(0, 13);
+  input.value = Number(limited).toLocaleString('id-ID');
+}
+function setCash(amount) {
+  document.getElementById('kalCash').value = formatAngka(amount);
+  hitungKalkulator();
+}
+
+/* ============================================================
+   NAV TAB
+============================================================ */
+function switchTab(tab) {
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+
+  document.getElementById('pageMenu').classList.add('hidden');
+  document.getElementById('pageDetail').classList.add('hidden');
+  document.getElementById('pageKalkulator').classList.add('hidden');
+  document.getElementById('pageKeuangan').classList.add('hidden');
+
+  if (tab === 'produk') {
+    document.getElementById('pageMenu').classList.remove('hidden');
+  } else if (tab === 'kalkulator') {
+    document.getElementById('pageKalkulator').classList.remove('hidden');
+    isiDropdownKalkulator();
+  } else if (tab === 'keuangan') {
+    document.getElementById('pageKeuangan').classList.remove('hidden');
+    listenKeuangan();
   }
-})();
+}
 
 /* ============================================================
-   ELEMEN
+   STATE
 ============================================================ */
-const errorEl = document.getElementById('error');
+let activeMenuId = null;
+let menusCache = [];
+let allItemsCache = [];
 
 /* ============================================================
-   LOGIN ADMIN
+   SEED DEFAULT
 ============================================================ */
-document.getElementById('adminForm').addEventListener('submit', function (e) {
-  e.preventDefault();
+const DEFAULT_MENUS = [
+  { nama: 'Jersey', icon: '👕', items: [
+    { nama: 'Jersey Printing', harga: 150000, promo: true,  harga3: 400000 },
+    { nama: 'Jersey Futsal',   harga: 140000, promo: true,  harga3: 380000 },
+    { nama: 'Jersey Polo',     harga: 160000, promo: true,  harga3: 420000 }
+  ]},
+  { nama: 'Kemeja', icon: '👔', items: [
+    { nama: 'Kemeja Custom', harga: 180000, promo: true,  harga3: 480000 },
+    { nama: 'Kemeja Formal', harga: 200000, promo: true,  harga3: 540000 },
+    { nama: 'Kemeja Batik',  harga: 220000, promo: true,  harga3: 600000 }
+  ]},
+  { nama: 'Cetak Foto', icon: '🖼️', items: [
+    { nama: 'Cetak Foto 4R',  harga: 25000, promo: false, harga3: 0 },
+    { nama: 'Cetak Foto 10R', harga: 45000, promo: false, harga3: 0 }
+  ]},
+  { nama: 'Gantungan Kunci', icon: '🔑', items: [
+    { nama: 'Gantungan Akrilik', harga: 15000, promo: false, harga3: 0 },
+    { nama: 'Gantungan Logam',   harga: 25000, promo: false, harga3: 0 }
+  ]},
+  { nama: 'ID Card Lanyard', icon: '🆔', items: [
+    { nama: 'ID Card Standard', harga: 35000, promo: false, harga3: 0 },
+    { nama: 'Lanyard Custom',   harga: 45000, promo: false, harga3: 0 }
+  ]},
+  { nama: 'Papan Nama / Nametag', icon: '🏷️', items: [
+    { nama: 'Nametag Akrilik', harga: 45000, promo: false, harga3: 0 },
+    { nama: 'Nametag Bordir',  harga: 55000, promo: false, harga3: 0 }
+  ]}
+];
 
-  const u = document.getElementById('username').value.trim();
-  const p = document.getElementById('password').value;
+async function seedIfEmpty() {
+  try {
+    const snap = await db.collection('menus').limit(1).get();
+    if (snap.empty && isAdmin()) {
+      const batch = db.batch();
+      DEFAULT_MENUS.forEach(m => {
+        const menuRef = db.collection('menus').doc();
+        batch.set(menuRef, { nama: m.nama, icon: m.icon });
+        m.items.forEach(it => {
+          const itemRef = menuRef.collection('items').doc();
+          batch.set(itemRef, it);
+        });
+      });
+      await batch.commit();
+      console.log('✅ Seed data default berhasil.');
+    }
+  } catch (err) {
+    console.warn('Seed gagal:', err);
+  }
+}
 
-  if (u !== ADMIN.username || p !== ADMIN.password) {
-    errorEl.textContent = 'Username atau password admin salah!';
+/* ============================================================
+   LISTEN MENUS
+============================================================ */
+let unsubscribeMenus = null;
+
+function listenMenus() {
+  if (unsubscribeMenus) unsubscribeMenus();
+
+  unsubscribeMenus = db.collection('menus').orderBy('nama').onSnapshot(
+    (snapshot) => {
+      menusCache = [];
+      snapshot.forEach(doc => menusCache.push({ docId: doc.id, ...doc.data() }));
+      renderMenus(menusCache);
+
+      if (activeMenuId) {
+        const m = menusCache.find(x => x.docId === activeMenuId);
+        if (m) {
+          document.getElementById('detailTitle').textContent = m.nama;
+          document.getElementById('detailIcon').textContent = m.icon || '📦';
+        } else {
+          kembaliKeMenu();
+        }
+      }
+    },
+    (error) => {
+      console.error('Firestore error:', error);
+      document.getElementById('menuGrid').innerHTML =
+        `<div class="empty">⚠️ Gagal memuat menu.<br><small>${escapeHtml(error.message)}</small></div>`;
+    }
+  );
+}
+
+/* ============================================================
+   RENDER MENUS
+============================================================ */
+function renderMenus(menus) {
+  const admin = isAdmin();
+  const grid = document.getElementById('menuGrid');
+  grid.innerHTML = '';
+
+  if (!menus || menus.length === 0) {
+    grid.innerHTML = '<div class="empty">Belum ada menu. Klik "➕ Tambah Menu" untuk mulai.</div>';
     return;
   }
 
-  errorEl.textContent = '';
-  sessionStorage.setItem('user', JSON.stringify({
-    username: u,
-    role: 'admin'
-  }));
-  window.location.href = 'beranda.html';
-});
+  menus.forEach(m => {
+    const card = document.createElement('div');
+    card.className = 'menu-card';
+
+    const actions = admin ? `
+      <div class="menu-actions">
+        <button class="btn-small btn-warning" onclick="event.stopPropagation(); openEditMenuModal('${m.docId}')">✏️</button>
+        <button class="btn-small btn-danger" onclick="event.stopPropagation(); hapusMenu('${m.docId}', '${escapeHtml(m.nama)}')">🗑️</button>
+      </div>
+    ` : '';
+
+    card.innerHTML = `
+      <span class="icon">${m.icon || '📦'}</span>
+      <div class="title">${escapeHtml(m.nama)}</div>
+      <div class="sub">Klik untuk lihat isi →</div>
+      ${actions}
+    `;
+    card.addEventListener('click', () => bukaMenu(m.docId));
+    grid.appendChild(card);
+  });
+}
 
 /* ============================================================
-   LOGIN TAMU (LANGSUNG)
+   BUKA DETAIL MENU
 ============================================================ */
-document.getElementById('guestBtn').addEventListener('click', function () {
-  sessionStorage.setItem('user', JSON.stringify({
-    username: 'Tamu',
-    role: 'tamu'
-  }));
-  window.location.href = 'beranda.html';
+function bukaMenu(menuDocId) {
+  activeMenuId = menuDocId;
+  const m = menusCache.find(x => x.docId === menuDocId);
+  if (m) {
+    document.getElementById('detailTitle').textContent = m.nama;
+    document.getElementById('detailIcon').textContent = m.icon || '📦';
+  }
+
+  const btnTambahItem = document.getElementById('btnTambahItem');
+  if (isAdmin()) btnTambahItem.classList.remove('hidden');
+  else btnTambahItem.classList.add('hidden');
+
+  document.getElementById('pageMenu').classList.add('hidden');
+  document.getElementById('pageKalkulator').classList.add('hidden');
+  document.getElementById('pageKeuangan').classList.add('hidden');
+  document.getElementById('pageDetail').classList.remove('hidden');
+
+  listenItems(menuDocId);
+}
+
+function kembaliKeMenu() {
+  if (unsubscribeItems) { unsubscribeItems(); unsubscribeItems = null; }
+  activeMenuId = null;
+  document.getElementById('pageDetail').classList.add('hidden');
+  document.getElementById('pageMenu').classList.remove('hidden');
+}
+
+/* ============================================================
+   LISTEN ITEMS
+============================================================ */
+let unsubscribeItems = null;
+
+function listenItems(menuDocId) {
+  if (unsubscribeItems) unsubscribeItems();
+
+  unsubscribeItems = db.collection('menus').doc(menuDocId).collection('items')
+    .orderBy('nama')
+    .onSnapshot(
+      (snapshot) => {
+        const items = [];
+        snapshot.forEach(doc => items.push({ docId: doc.id, ...doc.data() }));
+        renderItems(items);
+      },
+      (error) => {
+        console.error('Items error:', error);
+        document.getElementById('itemGrid').innerHTML =
+          `<div class="empty">⚠️ Gagal memuat item.<br><small>${escapeHtml(error.message)}</small></div>`;
+      }
+    );
+}
+
+/* ============================================================
+   HITUNG HARGA SATUAN (QTY & PROMO)
+============================================================ */
+function hitungHargaSatuan(item, qty) {
+  if (item.promo && item.harga3 > 0 && qty >= 3) {
+    return Math.round(item.harga3 / 3);
+  }
+  if (item.promo) {
+    return Math.round(item.harga * 0.85);
+  }
+  return item.harga;
+}
+
+/* ============================================================
+   RENDER ITEMS
+============================================================ */
+function renderItems(items) {
+  const admin = isAdmin();
+  const grid = document.getElementById('itemGrid');
+  grid.innerHTML = '';
+
+  if (!items || items.length === 0) {
+    grid.innerHTML = '<div class="empty">Belum ada item di menu ini.</div>';
+    return;
+  }
+
+  const menuNama = (menusCache.find(m => m.docId === activeMenuId) || {}).nama || 'Produk';
+
+  items.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'item-card' + (p.promo ? ' promo' : '');
+
+    let hargaHTML = `
+      <div class="row">
+        <span class="label">Harga Normal</span>
+        <span class="value">${rupiah(p.harga)}</span>
+      </div>
+    `;
+
+    if (p.promo && p.harga3 > 0) {
+      const diskon15 = Math.round(p.harga * 0.85);
+      const hemat    = p.harga - diskon15;
+      const perPcs   = Math.round(p.harga3 / 3);
+
+      hargaHTML += `
+        <div class="row">
+          <span class="label">Diskon 15% <span class="badge">HEMAT ${rupiah(hemat)}</span></span>
+          <span class="value diskon">${rupiah(diskon15)}</span>
+        </div>
+        <div class="row">
+          <span class="label">Harga Beli 3 <small>(/pcs)</small></span>
+          <span class="value">${rupiah(perPcs)}</span>
+        </div>
+        <div class="row highlight">
+          <span class="label"><b>Total Beli 3</b></span>
+          <span class="value total">${rupiah(p.harga3)}</span>
+        </div>
+      `;
+    }
+
+    const adminHTML = admin ? `
+      <div class="admin-actions">
+        <button class="btn-small btn-warning" onclick="openEditItemModal('${p.docId}')">✏️ Edit</button>
+        <button class="btn-small btn-danger" onclick="hapusItem('${p.docId}', '${escapeHtml(p.nama)}')">🗑️ Hapus</button>
+      </div>
+    ` : '';
+
+    const guestHTML = !admin ? `
+      <div class="qty-box">
+        <span class="qty-label">Jumlah:</span>
+        <div class="qty-control">
+          <button type="button" onclick="ubahQtyItem('${p.docId}', -1)">−</button>
+          <input type="number" id="qty_${p.docId}" value="1" min="1"
+            oninput="updateQtyPreview('${p.docId}', ${p.harga}, ${p.promo ? 'true' : 'false'}, ${p.harga3 || 0})">
+          <button type="button" onclick="ubahQtyItem('${p.docId}', 1)">+</button>
+        </div>
+      </div>
+
+      <div class="qty-preview" id="preview_${p.docId}">
+        <span class="lbl">Subtotal:</span>
+        <span class="val" id="preview_val_${p.docId}">${rupiah(hitungHargaSatuan(p, 1))}</span>
+      </div>
+
+      <button class="btn-add-cart" onclick='tambahKeKeranjang(${JSON.stringify({
+        docId: p.docId,
+        nama: p.nama,
+        harga: p.harga,
+        promo: !!p.promo,
+        harga3: p.harga3 || 0,
+        menuNama: menuNama
+      })})'>
+        🛒 Tambah ke Keranjang
+      </button>
+    ` : '';
+
+    card.innerHTML = `
+      <h3>
+        <span>${escapeHtml(p.nama)}</span>
+        ${p.promo ? '<span class="badge badge-green">PROMO</span>' : ''}
+      </h3>
+      ${hargaHTML}
+      ${adminHTML}
+      ${guestHTML}
+    `;
+    grid.appendChild(card);
+  });
+}
+
+/* ============================================================
+   QTY SELECTOR
+============================================================ */
+function ubahQtyItem(docId, delta) {
+  const input = document.getElementById('qty_' + docId);
+  let val = parseInt(input.value) || 1;
+  val += delta;
+  if (val < 1) val = 1;
+  input.value = val;
+  input.dispatchEvent(new Event('input'));
+}
+
+function updateQtyPreview(docId, harga, promo, harga3) {
+  const input = document.getElementById('qty_' + docId);
+  let qty = parseInt(input.value) || 1;
+  if (qty < 1) qty = 1;
+
+  const item = { harga, promo, harga3 };
+  const satuan = hitungHargaSatuan(item, qty);
+  const total = satuan * qty;
+
+  let text = `${qty} × ${rupiah(satuan)}`;
+  if (promo && qty >= 3 && harga3 > 0) text += ` ✅ grosir`;
+
+  document.getElementById('preview_val_' + docId).textContent = rupiah(total);
+  document.querySelector(`#preview_${docId} .lbl`).textContent = text;
+}
+
+/* ============================================================
+   KERANJANG
+============================================================ */
+let cart = JSON.parse(localStorage.getItem('hk_cart_v1') || '[]');
+
+function saveCart() {
+  localStorage.setItem('hk_cart_v1', JSON.stringify(cart));
+  updateCartBadge();
+}
+
+function updateCartBadge() {
+  const totalQty = cart.reduce((s, i) => s + i.qty, 0);
+  const badge = document.getElementById('cartBadgeHeader');
+  if (!badge) return;
+  if (totalQty > 0) {
+    badge.textContent = totalQty;
+    badge.classList.remove('hidden');
+  } else {
+    badge.classList.add('hidden');
+  }
+}
+
+function tambahKeKeranjang(item) {
+  const qtyInput = document.getElementById('qty_' + item.docId);
+  const qty = parseInt(qtyInput.value) || 1;
+
+  const satuan = hitungHargaSatuan(item, qty);
+  const subtotal = satuan * qty;
+
+  const idx = cart.findIndex(c => c.docId === item.docId);
+  if (idx !== -1) {
+    cart[idx].qty += qty;
+    cart[idx].satuan = hitungHargaSatuan(item, cart[idx].qty);
+    cart[idx].subtotal = cart[idx].satuan * cart[idx].qty;
+  } else {
+    cart.push({
+      docId: item.docId,
+      nama: item.nama,
+      menuNama: item.menuNama,
+      harga: item.harga,
+      promo: item.promo,
+      harga3: item.harga3,
+      qty: qty,
+      satuan: satuan,
+      subtotal: subtotal
+    });
+  }
+
+  saveCart();
+  qtyInput.value = 1;
+  qtyInput.dispatchEvent(new Event('input'));
+
+  tampilToast(`✅ "${item.nama}" (${qty} pcs) masuk keranjang`);
+}
+
+function tampilToast(msg) {
+  const t = document.createElement('div');
+  t.textContent = msg;
+  t.style.cssText = `
+    position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+    background: #28a745; color: #fff; padding: 12px 22px; border-radius: 10px;
+    font-size: 14px; font-weight: 600; z-index: 999;
+    box-shadow: 0 5px 20px rgba(40,167,69,0.4);
+    animation: toastIn 0.3s ease;
+  `;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2200);
+}
+
+function openCart() {
+  renderCart();
+  document.getElementById('modalCart').classList.remove('hidden');
+}
+
+function closeCart() {
+  document.getElementById('modalCart').classList.add('hidden');
+}
+
+function renderCart() {
+  const listEl = document.getElementById('cartList');
+  const totalEl = document.getElementById('cartTotalValue');
+
+  if (cart.length === 0) {
+    listEl.innerHTML = `
+      <div class="cart-empty">
+        <div class="icon-big">🛒</div>
+        <div>Keranjang masih kosong</div>
+        <div style="font-size:12px;margin-top:6px;">Tambah produk dulu yuk!</div>
+      </div>`;
+    totalEl.textContent = 'Rp 0';
+    return;
+  }
+
+  listEl.innerHTML = '';
+  let grand = 0;
+
+  cart.forEach((c, idx) => {
+    grand += c.subtotal;
+    const div = document.createElement('div');
+    div.className = 'cart-row';
+    div.innerHTML = `
+      <div class="cart-info">
+        <div class="cart-nama">${escapeHtml(c.nama)}</div>
+        <div class="cart-detail">${escapeHtml(c.menuNama)} · ${rupiah(c.satuan)}/pcs</div>
+      </div>
+      <div class="cart-qty-mini">
+        <button type="button" onclick="ubahQtyCart(${idx}, -1)">−</button>
+        <span>${c.qty}</span>
+        <button type="button" onclick="ubahQtyCart(${idx}, 1)">+</button>
+      </div>
+      <div class="cart-subtotal">${rupiah(c.subtotal)}</div>
+      <button type="button" class="cart-hapus" onclick="hapusDariCart(${idx})">×</button>
+    `;
+    listEl.appendChild(div);
+  });
+
+  totalEl.textContent = rupiah(grand);
+}
+
+function ubahQtyCart(idx, delta) {
+  if (!cart[idx]) return;
+  cart[idx].qty += delta;
+  if (cart[idx].qty < 1) cart[idx].qty = 1;
+
+  const satuan = hitungHargaSatuan(cart[idx], cart[idx].qty);
+  cart[idx].satuan = satuan;
+  cart[idx].subtotal = satuan * cart[idx].qty;
+
+  saveCart();
+  renderCart();
+}
+
+function hapusDariCart(idx) {
+  cart.splice(idx, 1);
+  saveCart();
+  renderCart();
+}
+
+function kosongkanCart() {
+  if (!confirm('Kosongkan semua keranjang?')) return;
+  cart = [];
+  saveCart();
+  renderCart();
+}
+
+function checkoutWA() {
+  if (cart.length === 0) { alert('Keranjang masih kosong!'); return; }
+
+  let pesan = 'Halo HKPROJECT! 👋\n\n';
+  pesan += 'Saya ingin memesan:\n\n';
+
+  let grand = 0;
+  cart.forEach((c, i) => {
+    grand += c.subtotal;
+    pesan += `${i + 1}. 📦 *${c.nama}*\n`;
+    pesan += `   Menu: ${c.menuNama}\n`;
+    pesan += `   Jumlah: ${c.qty} pcs\n`;
+    pesan += `   Harga satuan: ${rupiah(c.satuan)}\n`;
+    pesan += `   Subtotal: *${rupiah(c.subtotal)}*\n\n`;
+  });
+
+  pesan += '━━━━━━━━━━━━━━━\n';
+  pesan += `💰 *TOTAL: ${rupiah(grand)}*\n`;
+  pesan += '━━━━━━━━━━━━━━━\n\n';
+  pesan += 'Mohon info ketersediaan dan cara pemesanan. Terima kasih! 🙏';
+
+  const url = `https://wa.me/${KONTAK.wa}?text=${encodeURIComponent(pesan)}`;
+  window.open(url, '_blank');
+}
+
+/* ============================================================
+   KALKULATOR KASIR
+============================================================ */
+async function isiDropdownKalkulator() {
+  const dropdown = document.getElementById('kalProduk');
+  const currentVal = dropdown.value;
+
+  dropdown.innerHTML = '<option value="">-- Memuat produk... --</option>';
+
+  try {
+    allItemsCache = [];
+    const menusSnap = await db.collection('menus').orderBy('nama').get();
+
+    for (const menuDoc of menusSnap.docs) {
+      const menuData = menuDoc.data();
+      const itemsSnap = await menuDoc.ref.collection('items').orderBy('nama').get();
+      itemsSnap.forEach(itemDoc => {
+        const item = itemDoc.data();
+        allItemsCache.push({
+          menuNama: menuData.nama,
+          menuIcon: menuData.icon || '📦',
+          nama: item.nama,
+          harga: item.harga,
+          promo: !!item.promo,
+          harga3: item.harga3 || 0
+        });
+      });
+    }
+
+    let html = '<option value="">-- Pilih Produk --</option>';
+    html += '<option value="manual">✏️ Isi Manual (lain-lain)</option>';
+
+    let lastMenu = '';
+    allItemsCache.forEach((item, idx) => {
+      if (item.menuNama !== lastMenu) {
+        if (lastMenu !== '') html += '</optgroup>';
+        html += `<optgroup label="${item.menuIcon} ${escapeHtml(item.menuNama)}">`;
+        lastMenu = item.menuNama;
+      }
+      html += `<option value="${idx}">${escapeHtml(item.nama)} — ${rupiah(item.harga)}</option>`;
+    });
+    if (lastMenu !== '') html += '</optgroup>';
+
+    dropdown.innerHTML = html;
+    if (currentVal) dropdown.value = currentVal;
+    hitungKalkulator();
+  } catch (err) {
+    console.error('Gagal load produk:', err);
+    dropdown.innerHTML = '<option value="">-- Gagal memuat --</option><option value="manual">✏️ Isi Manual</option>';
+  }
+}
+
+function kalProdukBerubah() {
+  const val = document.getElementById('kalProduk').value;
+  const manualWrap = document.getElementById('kalManualWrap');
+
+  if (val === 'manual') {
+    manualWrap.classList.remove('hidden');
+    document.getElementById('kalHarga').value = '';
+  } else if (val === '') {
+    manualWrap.classList.add('hidden');
+    document.getElementById('kalHarga').value = '';
+  } else {
+    manualWrap.classList.add('hidden');
+    const item = allItemsCache[parseInt(val)];
+    if (item) {
+      document.getElementById('kalHarga').value = formatAngka(item.harga);
+      document.getElementById('kalManualNama').value = '';
+    }
+  }
+  hitungKalkulator();
+}
+
+function hitungKalkulator() {
+  const harga = parseAngka(document.getElementById('kalHarga').value);
+  const qty   = parseInt(document.getElementById('kalQty').value) || 1;
+  const cash  = parseAngka(document.getElementById('kalCash').value);
+
+  const total = harga * qty;
+  const kembali = cash - total;
+
+  document.getElementById('kalOutHarga').textContent = rupiah(harga);
+  document.getElementById('kalOutQty').textContent = qty + ' pcs';
+  document.getElementById('kalOutTotal').textContent = rupiah(total);
+  document.getElementById('kalOutCash').textContent = rupiah(cash);
+
+  const elKembali = document.getElementById('kalKembalian');
+  const elValue = document.getElementById('kalKembaliValue');
+
+  if (cash === 0) {
+    elKembali.className = 'kembalian-big';
+    elValue.textContent = 'Rp 0';
+  } else if (kembali >= 0) {
+    elKembali.className = 'kembalian-big ok';
+    elValue.textContent = rupiah(kembali);
+  } else {
+    elKembali.className = 'kembalian-big kurang';
+    elValue.textContent = '− ' + rupiah(Math.abs(kembali));
+  }
+}
+
+function resetKalkulator() {
+  document.getElementById('kalProduk').value = '';
+  document.getElementById('kalManualNama').value = '';
+  document.getElementById('kalHarga').value = '';
+  document.getElementById('kalQty').value = 1;
+  document.getElementById('kalCash').value = '';
+  document.getElementById('kalManualWrap').classList.add('hidden');
+  hitungKalkulator();
+}
+
+async function catatKeKeuangan() {
+  if (!isAdmin()) return;
+
+  const val = document.getElementById('kalProduk').value;
+  const harga = parseAngka(document.getElementById('kalHarga').value);
+  const qty = parseInt(document.getElementById('kalQty').value) || 1;
+  const cash = parseAngka(document.getElementById('kalCash').value);
+
+  let namaProduk = '';
+  if (val === 'manual') {
+    namaProduk = document.getElementById('kalManualNama').value.trim();
+    if (!namaProduk) { alert('Isi nama produk manual dulu!'); return; }
+  } else if (val === '') {
+    alert('Pilih produk dulu!'); return;
+  } else {
+    const item = allItemsCache[parseInt(val)];
+    namaProduk = item ? item.nama : '';
+  }
+
+  if (isNaN(harga) || harga <= 0) { alert('Harga wajib diisi!'); return; }
+
+  const total = harga * qty;
+  const kembali = cash - total;
+
+  if (cash > 0 && kembali < 0) {
+    alert('Uang cash kurang dari total belanja! Tidak bisa dicatat.');
+    return;
+  }
+
+  const keterangan = `${namaProduk} × ${qty}`;
+
+  try {
+    await db.collection('keuangan').add({
+      jenis: 'masuk',
+      keterangan: keterangan,
+      jumlah: total,
+      tanggal: todayISO(),
+      sumber: 'kalkulator',
+      qty: qty,
+      hargaSatuan: harga,
+      cash: cash,
+      kembalian: kembali > 0 ? kembali : 0
+    });
+
+    alert(`✅ Transaksi tercatat!\n\n${keterangan}\nTotal: ${rupiah(total)}${cash > 0 ? '\nKembalian: ' + rupiah(kembali) : ''}\n\nCek di menu 💰 Keuangan.`);
+    resetKalkulator();
+  } catch (err) {
+    alert('Gagal mencatat: ' + err.message);
+  }
+}
+
+/* ============================================================
+   MODAL MENU
+============================================================ */
+function openTambahMenuModal() {
+  if (!isAdmin()) return;
+  document.getElementById('modalMenuTitle').textContent = '➕ Tambah Menu';
+  document.getElementById('menuNama').value = '';
+  document.getElementById('menuIcon').value = '📦';
+  document.getElementById('modalMenu').dataset.mode = 'tambah';
+  document.getElementById('modalMenu').dataset.editId = '';
+  document.getElementById('modalMenu').classList.remove('hidden');
+}
+
+function openEditMenuModal(docId) {
+  if (!isAdmin()) return;
+  const m = menusCache.find(x => x.docId === docId);
+  if (!m) return;
+
+  document.getElementById('modalMenuTitle').textContent = '✏️ Edit Menu';
+  document.getElementById('menuNama').value = m.nama;
+  document.getElementById('menuIcon').value = m.icon || '📦';
+  document.getElementById('modalMenu').dataset.mode = 'edit';
+  document.getElementById('modalMenu').dataset.editId = docId;
+  document.getElementById('modalMenu').classList.remove('hidden');
+}
+
+function closeModalMenu() { document.getElementById('modalMenu').classList.add('hidden'); }
+
+async function simpanMenu() {
+  if (!isAdmin()) return;
+  const mode   = document.getElementById('modalMenu').dataset.mode;
+  const editId = document.getElementById('modalMenu').dataset.editId;
+  const nama   = document.getElementById('menuNama').value.trim();
+  const icon   = document.getElementById('menuIcon').value.trim() || '📦';
+
+  if (!nama) { alert('Nama menu wajib diisi!'); return; }
+
+  try {
+    if (mode === 'edit') {
+      await db.collection('menus').doc(editId).update({ nama, icon });
+    } else {
+      await db.collection('menus').add({ nama, icon });
+    }
+    closeModalMenu();
+  } catch (err) {
+    alert('Gagal menyimpan menu: ' + err.message);
+  }
+}
+
+async function hapusMenu(docId, nama) {
+  if (!isAdmin()) return;
+  if (!confirm(`Hapus menu "${nama}" beserta semua item di dalamnya?`)) return;
+
+  try {
+    const itemsSnap = await db.collection('menus').doc(docId).collection('items').get();
+    const batch = db.batch();
+    itemsSnap.forEach(it => batch.delete(it.ref));
+    batch.delete(db.collection('menus').doc(docId));
+    await batch.commit();
+  } catch (err) {
+    alert('Gagal menghapus menu: ' + err.message);
+  }
+}
+
+/* ============================================================
+   MODAL ITEM
+============================================================ */
+function openTambahItemModal() {
+  if (!isAdmin() || !activeMenuId) return;
+  document.getElementById('modalItemTitle').textContent = '➕ Tambah Item';
+  document.getElementById('inNama').value = '';
+  document.getElementById('inHarga').value = '';
+  document.getElementById('inHarga3').value = '';
+  document.getElementById('inPromo').checked = false;
+  document.getElementById('promoFields').classList.add('hidden');
+  document.getElementById('modalItem').dataset.mode = 'tambah';
+  document.getElementById('modalItem').dataset.editId = '';
+  document.getElementById('modalItem').classList.remove('hidden');
+}
+
+async function openEditItemModal(docId) {
+  if (!isAdmin() || !activeMenuId) return;
+  try {
+    const doc = await db.collection('menus').doc(activeMenuId).collection('items').doc(docId).get();
+    if (!doc.exists) return;
+    const p = doc.data();
+
+    document.getElementById('modalItemTitle').textContent = '✏️ Edit Item';
+    document.getElementById('inNama').value = p.nama;
+    document.getElementById('inHarga').value = p.harga;
+    document.getElementById('inPromo').checked = !!p.promo;
+    document.getElementById('inHarga3').value = p.harga3 || '';
+    document.getElementById('promoFields').classList.toggle('hidden', !p.promo);
+    document.getElementById('modalItem').dataset.mode = 'edit';
+    document.getElementById('modalItem').dataset.editId = docId;
+    document.getElementById('modalItem').classList.remove('hidden');
+  } catch (err) {
+    alert('Gagal memuat item: ' + err.message);
+  }
+}
+
+function closeModalItem() { document.getElementById('modalItem').classList.add('hidden'); }
+
+document.getElementById('inPromo').addEventListener('change', function () {
+  document.getElementById('promoFields').classList.toggle('hidden', !this.checked);
 });
+
+async function simpanItem() {
+  if (!isAdmin() || !activeMenuId) return;
+
+  const mode   = document.getElementById('modalItem').dataset.mode;
+  const editId = document.getElementById('modalItem').dataset.editId;
+  const nama   = document.getElementById('inNama').value.trim();
+  const harga  = parseInt(document.getElementById('inHarga').value);
+  const promo  = document.getElementById('inPromo').checked;
+  const harga3 = promo ? parseInt(document.getElementById('inHarga3').value) : 0;
+
+  if (!nama || isNaN(harga) || harga <= 0) { alert('Nama & harga wajib diisi!'); return; }
+  if (promo && (isNaN(harga3) || harga3 <= 0)) { alert('Harga Beli 3 wajib diisi!'); return; }
+
+  const btn = document.getElementById('btnSimpanItem');
+  btn.disabled = true;
+  btn.textContent = 'Menyimpan...';
+
+  try {
+    const itemsRef = db.collection('menus').doc(activeMenuId).collection('items');
+    if (mode === 'edit') {
+      await itemsRef.doc(editId).update({ nama, harga, promo, harga3 });
+    } else {
+      await itemsRef.add({ nama, harga, promo, harga3 });
+    }
+    closeModalItem();
+  } catch (err) {
+    alert('Gagal menyimpan item: ' + err.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Simpan';
+  }
+}
+
+async function hapusItem(docId, nama) {
+  if (!isAdmin() || !activeMenuId) return;
+  if (!confirm(`Hapus item "${nama}"?`)) return;
+
+  try {
+    await db.collection('menus').doc(activeMenuId).collection('items').doc(docId).delete();
+  } catch (err) {
+    alert('Gagal hapus: ' + err.message);
+  }
+}
+
+/* ============================================================
+   KEUANGAN
+============================================================ */
+let unsubscribeKeuangan = null;
+let keuanganCache = [];
+
+function listenKeuangan() {
+  if (!isAdmin()) return;
+  if (unsubscribeKeuangan) unsubscribeKeuangan();
+
+  unsubscribeKeuangan = db.collection('keuangan')
+    .orderBy('tanggal', 'desc')
+    .onSnapshot(
+      (snapshot) => {
+        keuanganCache = [];
+        snapshot.forEach(doc => keuanganCache.push({ docId: doc.id, ...doc.data() }));
+        renderKeuangan(keuanganCache);
+      },
+      (error) => {
+        console.error('Keuangan error:', error);
+        document.getElementById('keuanganBody').innerHTML =
+          `<tr><td colspan="5" style="text-align:center;color:#dc3545;padding:30px;">
+            ⚠️ Gagal memuat: ${escapeHtml(error.message)}
+          </td></tr>`;
+      }
+    );
+}
+
+function renderKeuangan(list) {
+  const tbody = document.getElementById('keuanganBody');
+  tbody.innerHTML = '';
+
+  let totalMasuk = 0;
+  let totalKeluar = 0;
+
+  if (!list || list.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#999;padding:30px;">Belum ada catatan keuangan.</td></tr>';
+    document.getElementById('totalMasuk').textContent = rupiah(0);
+    document.getElementById('totalKeluar').textContent = rupiah(0);
+    document.getElementById('totalSaldo').textContent = rupiah(0);
+    return;
+  }
+
+  list.forEach(k => {
+    if (k.jenis === 'masuk') totalMasuk += k.jumlah;
+    else totalKeluar += k.jumlah;
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${formatTanggal(k.tanggal)}</td>
+      <td>${escapeHtml(k.keterangan)}</td>
+      <td>${k.jenis === 'masuk' ? '<span style="color:#28a745;">💵 Masuk</span>' : '<span style="color:#dc3545;">💸 Keluar</span>'}</td>
+      <td style="text-align:right;" class="${k.jenis === 'masuk' ? 'td-masuk' : 'td-keluar'}">
+        ${k.jenis === 'masuk' ? '+' : '-'} ${rupiah(k.jumlah)}
+      </td>
+      <td style="text-align:center;">
+        <button class="btn-small btn-danger" onclick="hapusKeuangan('${k.docId}')">🗑️</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  document.getElementById('totalMasuk').textContent = rupiah(totalMasuk);
+  document.getElementById('totalKeluar').textContent = rupiah(totalKeluar);
+  document.getElementById('totalSaldo').textContent = rupiah(totalMasuk - totalKeluar);
+}
+
+function openTambahKeuanganModal() {
+  if (!isAdmin()) return;
+  document.getElementById('inJenis').value = 'masuk';
+  document.getElementById('inKeterangan').value = '';
+  document.getElementById('inJumlah').value = '';
+  document.getElementById('inTanggal').value = todayISO();
+  document.getElementById('modalKeuangan').classList.remove('hidden');
+}
+
+function closeModalKeuangan() { document.getElementById('modalKeuangan').classList.add('hidden'); }
+
+async function simpanKeuangan() {
+  if (!isAdmin()) return;
+
+  const jenis      = document.getElementById('inJenis').value;
+  const keterangan = document.getElementById('inKeterangan').value.trim();
+  const jumlah     = parseInt(document.getElementById('inJumlah').value);
+  const tanggal    = document.getElementById('inTanggal').value;
+
+  if (!keterangan || isNaN(jumlah) || jumlah <= 0 || !tanggal) {
+    alert('Semua field wajib diisi!');
+    return;
+  }
+
+  try {
+    await db.collection('keuangan').add({ jenis, keterangan, jumlah, tanggal });
+    closeModalKeuangan();
+  } catch (err) {
+    alert('Gagal menyimpan: ' + err.message);
+  }
+}
+
+async function hapusKeuangan(docId) {
+  if (!isAdmin()) return;
+  if (!confirm('Hapus catatan keuangan ini?')) return;
+  try {
+    await db.collection('keuangan').doc(docId).delete();
+  } catch (err) {
+    alert('Gagal hapus: ' + err.message);
+  }
+}
+
+/* ============================================================
+   LOGOUT
+============================================================ */
+function logout() {
+  sessionStorage.removeItem('user');
+  window.location.href = 'index.html';
+}
+
+/* ============================================================
+   MULAI
+============================================================ */
+(async function start() {
+  updateCartBadge();
+  if (isAdmin()) await seedIfEmpty();
+  listenMenus();
+})();
 </script>
 </body>
 </html>
