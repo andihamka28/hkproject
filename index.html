@@ -1,18 +1,171 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>Home</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login App</title>
+<style>
+  * { box-sizing: border-box; font-family: Arial, sans-serif; }
+  body {
+    background: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+  }
+  .box {
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    width: 380px;
+    text-align: center;
+  }
+  h1, h2 { color: #333; margin-top: 0; }
+  input {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  button {
+    padding: 10px 15px;
+    margin: 5px 0;
+    background: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    width: 100%;
+  }
+  button:hover { background: #0056b3; }
+  button:disabled { background: #ccc; cursor: not-allowed; }
+  .btn-guest { background: #28a745; }
+  .btn-guest:hover { background: #1e7e34; }
+  .error { color: red; font-size: 14px; min-height: 18px; margin: 5px 0; }
+  .divider {
+    display: flex; align-items: center;
+    margin: 18px 0; color: #888; font-size: 13px;
+  }
+  .divider::before, .divider::after {
+    content: ''; flex: 1; height: 1px; background: #ddd;
+  }
+  .divider span { padding: 0 10px; }
+  .hidden { display: none; }
+</style>
 </head>
 <body>
-  <script>
-    const raw = sessionStorage.getItem('user');
-    if (!raw) {
-      window.location.href = 'login.html';
-    } else {
-      const user = JSON.parse(raw);
-      window.location.href = user.role === 'admin' ? 'admin.html' : 'tamu.html';
-    }
-  </script>
+
+<!-- ===== HALAMAN LOGIN ===== -->
+<div id="pageLogin" class="box">
+  <h2>Login</h2>
+  <p id="error" class="error"></p>
+
+  <form id="adminForm">
+    <input type="text" id="username" placeholder="Username Admin" required>
+    <input type="password" id="password" placeholder="Password Admin" required>
+    <button type="submit">Login sebagai Admin</button>
+  </form>
+
+  <div class="divider"><span>atau</span></div>
+
+  <button id="guestBtn" class="btn-guest">👤 Masuk sebagai Tamu</button>
+</div>
+
+<!-- ===== HALAMAN ADMIN ===== -->
+<div id="pageAdmin" class="box hidden">
+  <h1>Dashboard Admin</h1>
+  <p>Halo, <b id="adminName"></b></p>
+  <p>Anda punya akses penuh: tambah, edit, hapus.</p>
+  <button onclick="alert('Edit data (khusus admin)')">Edit Data</button>
+  <button onclick="alert('Hapus data (khusus admin)')">Hapus Data</button>
+  <button onclick="logout()">Logout</button>
+</div>
+
+<!-- ===== HALAMAN TAMU ===== -->
+<div id="pageTamu" class="box hidden">
+  <h1>Dashboard Tamu</h1>
+  <p>Halo, <b id="tamuName"></b></p>
+  <p>Anda hanya bisa <b>melihat</b> data.</p>
+  <button disabled>Edit Data</button>
+  <button disabled>Hapus Data</button>
+  <button onclick="logout()">Logout</button>
+</div>
+
+<script>
+// ==== KONFIGURASI ADMIN ====
+const ADMIN = { username: 'admin', password: 'admin123' };
+
+// ==== ELEMEN ====
+const pageLogin = document.getElementById('pageLogin');
+const pageAdmin = document.getElementById('pageAdmin');
+const pageTamu  = document.getElementById('pageTamu');
+const errorEl   = document.getElementById('error');
+
+// ==== FUNGSI TAMPILKAN HALAMAN ====
+function showPage(page) {
+  pageLogin.classList.add('hidden');
+  pageAdmin.classList.add('hidden');
+  pageTamu.classList.add('hidden');
+  page.classList.remove('hidden');
+}
+
+// ==== LOGIN ADMIN ====
+document.getElementById('adminForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+  const u = document.getElementById('username').value.trim();
+  const p = document.getElementById('password').value;
+
+  if (u !== ADMIN.username || p !== ADMIN.password) {
+    errorEl.textContent = 'Username atau password admin salah!';
+    return;
+  }
+  errorEl.textContent = '';
+  sessionStorage.setItem('user', JSON.stringify({ username: u, role: 'admin' }));
+  openAdmin();
+});
+
+// ==== LOGIN TAMU (LANGSUNG) ====
+document.getElementById('guestBtn').addEventListener('click', function () {
+  sessionStorage.setItem('user', JSON.stringify({ username: 'Tamu', role: 'tamu' }));
+  openTamu();
+});
+
+// ==== BUKA HALAMAN ADMIN ====
+function openAdmin() {
+  const user = JSON.parse(sessionStorage.getItem('user') || 'null');
+  if (!user || user.role !== 'admin') { showPage(pageLogin); return; }
+  document.getElementById('adminName').textContent = user.username;
+  showPage(pageAdmin);
+}
+
+// ==== BUKA HALAMAN TAMU ====
+function openTamu() {
+  const user = JSON.parse(sessionStorage.getItem('user') || 'null');
+  if (!user || user.role !== 'tamu') { showPage(pageLogin); return; }
+  document.getElementById('tamuName').textContent = user.username;
+  showPage(pageTamu);
+}
+
+// ==== LOGOUT ====
+function logout() {
+  sessionStorage.removeItem('user');
+  document.getElementById('username').value = '';
+  document.getElementById('password').value = '';
+  errorEl.textContent = '';
+  showPage(pageLogin);
+}
+
+// ==== CEK SESSION SAAT LOAD ====
+(function init() {
+  const user = JSON.parse(sessionStorage.getItem('user') || 'null');
+  if (!user) { showPage(pageLogin); return; }
+  if (user.role === 'admin') openAdmin();
+  else openTamu();
+})();
+</script>
 </body>
 </html>
