@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Home</title>
+</head>
+<body>
+  <script>
+    const raw = sessionStorage.getItem('user');
+    if (!raw) {
+      window.location.href = 'login.html';
+    } else {
+      const user = JSON.parse(raw);
+      window.location.href = user.role === 'admin' ? 'admin.html' : 'tamu.html';
+    }
+  </script>
+</body>
+</html>
