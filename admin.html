@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard Admin</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1 id="welcome"></h1>
+    <p>Anda memiliki akses penuh: <b>tambah, edit, hapus</b>.</p>
+
+    <button onclick="alert('Edit data (khusus admin)')">Edit Data</button>
+    <button onclick="alert('Hapus data (khusus admin)')">Hapus Data</button>
+    <button onclick="logout()">Logout</button>
+  </div>
+
+  <script src="js/guard.js"></script>
+  <script>
+    const user = requireRole('admin');
+    if (user) {
+      document.getElementById('welcome').textContent = 'Halo Admin, ' + user.username;
+    }
+  </script>
+</body>
+</html>
